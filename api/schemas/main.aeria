@@ -3,10 +3,105 @@ collection TempFile extends aeria.tempFile {}
 collection User extends aeria.user {
   properties {
     roles []enum @values([
-      "root",
-      "supervisor",
-      "customer"
+      "RH"
     ])
   }
 }
+
+collection Employee {
+  icon "folder-user"
+  properties {
+    name str
+    corporate_email str
+    contact str
+    employee_status bool
+    arrive_date str @format("date")
+    exit_date str @format("date")
+  }
+  functions {
+    get @expose
+    getAll @expose
+    insert @expose
+    remove @expose
+  }
+  presets {
+    crud
+  }
+}
+
+collection Info {
+  icon "info"
+  properties {
+    name_resource str
+    serial_number str
+    cape bool
+    deliver_by User
+    observation str
+  }
+  functions {
+    get @expose
+    getAll @expose
+    insert @expose
+    remove @expose
+  }
+  presets {
+    crud
+  }
+  required{
+    name_resource
+    serial_number
+    cape
+    deliver_by
+  }
+  table{
+    name_resource
+    serial_number
+    deliver_by
+    observation
+  }
+  filters{
+    name_resource
+    serial_number
+    cape
+    deliver_by
+  }
+}
+
+collection Equipment {
+  icon "desktop-tower"
+  properties {
+    resource_assigned Info
+    asset str
+    allocation_date str @format("date-time")
+    collection_date str @format("date-time")
+  }
+  functions {
+    get @expose
+    getAll @expose
+    insert @expose
+    remove @expose
+  }
+  presets {
+    crud
+  }
+  required{
+    resource_assigned
+    asset
+    allocation_date
+  }
+  filters{
+    resource_assigned
+    asset
+    allocation_date
+    collection_date
+  }
+  table{
+    resource_assigned
+    asset
+    allocation_date
+    collection_date
+  }
+}
+
+
 
