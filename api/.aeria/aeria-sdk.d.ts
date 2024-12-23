@@ -48,9 +48,36 @@ declare type MirrorDescriptions = {
       }
     },
     "icon": "folder-user",
+    "table": [
+      "name",
+      "corporate_email",
+      "employee_status",
+      "arrive_date",
+      "exit_date"
+    ],
+    "required": [
+      "name",
+      "corporate_email",
+      "contact",
+      "employee_status",
+      "arrive_date"
+    ],
     "presets": [
       "crud"
     ],
+    "formLayout": {
+      "fields": {
+        "exit_date": {
+          "if": {
+            "not": {
+              "operator": "equal",
+              "term1": "employee_status",
+              "term2": true
+            }
+          }
+        }
+      }
+    },
     "actions": {
       "spawnAdd": {
         "label": "action.add",
@@ -88,13 +115,19 @@ declare type MirrorDescriptions = {
     "$id": "equipment",
     "properties": {
       "resource_assigned": {
-        "$ref": "info",
-        "indexes": [
-          "name_resource"
-        ]
+        "type": "array",
+        "items": {
+          "$ref": "info",
+          "indexes": [
+            "name_resource"
+          ]
+        }
       },
-      "asset": {
-        "type": "string"
+      "funcionario": {
+        "$ref": "employee",
+        "indexes": [
+          "name"
+        ]
       },
       "allocation_date": {
         "type": "string",
@@ -122,18 +155,16 @@ declare type MirrorDescriptions = {
     "icon": "desktop-tower",
     "table": [
       "resource_assigned",
-      "asset",
+      "funcionario",
       "allocation_date",
       "collection_date"
     ],
     "required": [
       "resource_assigned",
-      "asset",
       "allocation_date"
     ],
     "filters": [
       "resource_assigned",
-      "asset",
       "allocation_date",
       "collection_date"
     ],
@@ -258,7 +289,7 @@ declare type MirrorDescriptions = {
       "name_resource": {
         "type": "string"
       },
-      "serial_number": {
+      "asset": {
         "type": "string"
       },
       "cape": {
@@ -291,13 +322,13 @@ declare type MirrorDescriptions = {
     "icon": "info",
     "table": [
       "name_resource",
-      "serial_number",
+      "asset",
       "deliver_by",
       "observation"
     ],
     "required": [
       "name_resource",
-      "serial_number",
+      "asset",
       "cape",
       "deliver_by"
     ],
@@ -310,6 +341,12 @@ declare type MirrorDescriptions = {
     "presets": [
       "crud"
     ],
+    "search": {
+      "indexes": [
+        "name_resource"
+      ],
+      "placeholder": "Insira o nome do equipamento aqui"
+    },
     "actions": {
       "spawnAdd": {
         "label": "action.add",
@@ -420,7 +457,8 @@ declare type MirrorDescriptions = {
         "items": {
           "type": "string",
           "enum": [
-            "RH"
+            "root",
+            "rh"
           ]
         },
         "uniqueItems": true,

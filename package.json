@@ -23,5 +23,8 @@
   "workspaces": [
     "api",
     "web"
-  ]
+  ],
+  "dependencies": {
+    "@aeria-ui/i18n-pt": "^0.0.3"
+  }
 }

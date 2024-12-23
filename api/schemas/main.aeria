@@ -2,9 +2,17 @@ collection File extends aeria.file {}
 collection TempFile extends aeria.tempFile {}
 collection User extends aeria.user {
   properties {
+    name str
     roles []enum @values([
-      "RH"
+      "root",
+      "rh"
     ])
+  }
+  functions{
+    get @expose(true)
+    getAll @expose(true)
+    insert @expose(true)
+    remove @expose(true)
   }
 }
 
@@ -19,85 +27,104 @@ collection Employee {
     exit_date str @format("date")
   }
   functions {
-    get @expose
-    getAll @expose
-    insert @expose
-    remove @expose
+    get @expose(true)
+    getAll @expose(true)
+    insert @expose(true)
+    remove @expose(true)
   }
   presets {
     crud
   }
+  required{
+    name
+    corporate_email
+    contact
+    employee_status
+    arrive_date
+  }
+  table{
+    name
+    corporate_email
+    employee_status
+    arrive_date
+    exit_date
+  }
 }
 
-collection Info {
+collection Equipment {
   icon "info"
   properties {
     name_resource str
-    serial_number str
+    asset str
     cape bool
     deliver_by User
     observation str
   }
   functions {
-    get @expose
-    getAll @expose
-    insert @expose
-    remove @expose
+    get @expose(true)
+    getAll @expose(true)
+    insert @expose(true)
+    remove @expose(true)
   }
   presets {
     crud
   }
   required{
     name_resource
-    serial_number
+    asset
     cape
     deliver_by
   }
   table{
     name_resource
-    serial_number
+    asset
+    cape
     deliver_by
     observation
   }
   filters{
     name_resource
-    serial_number
     cape
     deliver_by
   }
+  search{
+    placeholder "Insira o nome do equipamento aqui"
+    indexes {
+      name_resource
+    }
+  }
 }
 
-collection Equipment {
+collection Index {
   icon "desktop-tower"
   properties {
-    resource_assigned Info
-    asset str
+    resource_assigned []Equipment
+    funcionario Employee
     allocation_date str @format("date-time")
     collection_date str @format("date-time")
   }
   functions {
-    get @expose
-    getAll @expose
-    insert @expose
-    remove @expose
+    get @expose(true)
+    getAll @expose(true)
+    insert @expose(true)
+    remove @expose(true)
   }
   presets {
     crud
   }
   required{
     resource_assigned
-    asset
+    funcionario
     allocation_date
   }
   filters{
     resource_assigned
-    asset
     allocation_date
     collection_date
   }
   table{
     resource_assigned
-    asset
+    funcionario
     allocation_date
     collection_date
   }
