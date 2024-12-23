@@ -4,7 +4,6 @@ collection User extends aeria.user {
   properties {
     name str
     roles []enum @values([
-      "root",
       "rh"
     ])
   }
@@ -22,8 +21,8 @@ collection Employee {
     name str
     corporate_email str
     contact str
-    employee_status bool
-    arrive_date str @format("date")
+    is_active bool
+    admission_date str @format("date")
     exit_date str @format("date")
   }
   functions {
@@ -39,25 +38,25 @@ collection Employee {
     name
     corporate_email
     contact
-    employee_status
-    arrive_date
+    is_active
   }
   table{
     name
     corporate_email
-    employee_status
+    is_active
     arrive_date
     exit_date
   }
 }
 
-collection Equipment {
-  icon "info"
+collection Asset {
+  icon "desktop-tower"
   properties {
-    name_resource str
-    asset str
-    cape bool
-    deliver_by User
+    name str
+    type enum @values(["physical", "digital"])
+    code str
+    includes_accessories bool
+    registered_by User
     observation str
   }
   functions {
@@ -70,36 +69,42 @@ collection Equipment {
     crud
   }
   required{
-    name_resource
-    asset
-    cape
-    deliver_by
+    type
+    name
+    code
+    includes_accessories
+    registered_by
   }
   table{
-    name_resource
-    asset
-    cape
-    deliver_by
+    type
+    name
+    code
+    includes_accessories
+    registered_by
     observation
   }
   filters{
-    name_resource
-    cape
-    deliver_by
+    type
+    name
+    includes_accessories
+    registered_by
   }
   search{
-    placeholder "Insira o nome do equipamento aqui"
+    placeholder "Insira a pesquisa aqui"
     indexes {
-      name_resource
+      type
+      name
+      code
     }
   }
 }
 
-collection Index {
-  icon "desktop-tower"
+collection Equipment_Release {
+  icon "gauge"
   properties {
-    resource_assigned []Equipment
-    funcionario Employee
+    equipments []Asset
+    delivered_to Employee 
+    delivered_by User
     allocation_date str @format("date-time")
     collection_date str @format("date-time")
   }
@@ -113,20 +118,20 @@ collection Index {
     crud
   }
   required{
-    resource_assigned
-    funcionario
+    equipments
+    delivered_to
+    delivered_by
     allocation_date
   }
   filters{
-    resource_assigned
+    equipments
+    delivered_to
+    delivered_by
     allocation_date
     collection_date
   }
   table{
-    resource_assigned
-    funcionario
-    allocation_date
-    collection_date
+    delivered_to
   }
 }
 

@@ -9,6 +9,114 @@ import type {
 } from '@aeriajs/types'
 
 declare type MirrorDescriptions = {
+  "asset": {
+    "$id": "asset",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "type": {
+        "enum": [
+          "physical",
+          "digital"
+        ]
+      },
+      "code": {
+        "type": "string"
+      },
+      "includes_accessories": {
+        "type": "boolean"
+      },
+      "registered_by": {
+        "$ref": "user",
+        "indexes": [
+          "name"
+        ]
+      },
+      "observation": {
+        "type": "string"
+      },
+      "created_at": {
+        "type": "string",
+        "format": "date-time",
+        "noForm": true,
+        "readOnly": true,
+        "isTimestamp": true
+      },
+      "updated_at": {
+        "type": "string",
+        "format": "date-time",
+        "noForm": true,
+        "readOnly": true,
+        "isTimestamp": true
+      }
+    },
+    "icon": "desktop-tower",
+    "table": [
+      "type",
+      "name",
+      "code",
+      "includes_accessories",
+      "registered_by",
+      "observation"
+    ],
+    "required": [
+      "type",
+      "name",
+      "code",
+      "includes_accessories",
+      "registered_by"
+    ],
+    "filters": [
+      "type",
+      "name",
+      "includes_accessories",
+      "registered_by"
+    ],
+    "presets": [
+      "crud"
+    ],
+    "search": {
+      "indexes": [
+        "type",
+        "name",
+        "code"
+      ],
+      "placeholder": "Insira a pesquisa aqui"
+    },
+    "actions": {
+      "spawnAdd": {
+        "label": "action.add",
+        "event": "spawnAdd",
+        "icon": "plus",
+        "button": true,
+        "translate": true
+      }
+    },
+    "individualActions": {
+      "spawnEdit": {
+        "label": "action.edit",
+        "event": "spawnEdit",
+        "icon": "pencil-simple",
+        "translate": true
+      },
+      "viewItem": {
+        "label": "action.view",
+        "icon": "eye",
+        "translate": true,
+        "route": {
+          "name": "/dashboard/:collection/:id",
+          "setItem": true
+        }
+      },
+      "remove": {
+        "label": "action.remove",
+        "icon": "trash",
+        "ask": true,
+        "translate": true
+      }
+    }
+  },
   "employee": {
     "$id": "employee",
     "properties": {
@@ -21,10 +129,10 @@ declare type MirrorDescriptions = {
       "contact": {
         "type": "string"
       },
-      "employee_status": {
+      "is_active": {
         "type": "boolean"
       },
-      "arrive_date": {
+      "admission_date": {
         "type": "string",
         "format": "date"
       },
@@ -51,7 +159,7 @@ declare type MirrorDescriptions = {
     "table": [
       "name",
       "corporate_email",
-      "employee_status",
+      "is_active",
       "arrive_date",
       "exit_date"
     ],
@@ -59,8 +167,7 @@ declare type MirrorDescriptions = {
       "name",
       "corporate_email",
       "contact",
-      "employee_status",
-      "arrive_date"
+      "is_active"
     ],
     "presets": [
       "crud"
@@ -71,7 +178,7 @@ declare type MirrorDescriptions = {
           "if": {
             "not": {
               "operator": "equal",
-              "term1": "employee_status",
+              "term1": "is_active",
               "term2": true
             }
           }
@@ -111,20 +218,26 @@ declare type MirrorDescriptions = {
       }
     }
   },
-  "equipment": {
-    "$id": "equipment",
+  "equipment_Release": {
+    "$id": "equipment_Release",
     "properties": {
-      "resource_assigned": {
+      "equipments": {
         "type": "array",
         "items": {
-          "$ref": "info",
+          "$ref": "asset",
           "indexes": [
-            "name_resource"
+            "name"
           ]
         }
       },
-      "funcionario": {
+      "delivered_to": {
         "$ref": "employee",
+        "indexes": [
+          "name"
+        ]
+      },
+      "delivered_by": {
+        "$ref": "user",
         "indexes": [
           "name"
         ]
@@ -152,19 +265,20 @@ declare type MirrorDescriptions = {
         "isTimestamp": true
       }
     },
-    "icon": "desktop-tower",
+    "icon": "gauge",
     "table": [
-      "resource_assigned",
-      "funcionario",
-      "allocation_date",
-      "collection_date"
+      "delivered_to"
     ],
     "required": [
-      "resource_assigned",
+      "equipments",
+      "delivered_to",
+      "delivered_by",
       "allocation_date"
     ],
     "filters": [
-      "resource_assigned",
+      "equipments",
+      "delivered_to",
+      "delivered_by",
       "allocation_date",
       "collection_date"
     ],
@@ -283,103 +397,6 @@ declare type MirrorDescriptions = {
       }
     }
   },
-  "info": {
-    "$id": "info",
-    "properties": {
-      "name_resource": {
-        "type": "string"
-      },
-      "asset": {
-        "type": "string"
-      },
-      "cape": {
-        "type": "boolean"
-      },
-      "deliver_by": {
-        "$ref": "user",
-        "indexes": [
-          "name"
-        ]
-      },
-      "observation": {
-        "type": "string"
-      },
-      "created_at": {
-        "type": "string",
-        "format": "date-time",
-        "noForm": true,
-        "readOnly": true,
-        "isTimestamp": true
-      },
-      "updated_at": {
-        "type": "string",
-        "format": "date-time",
-        "noForm": true,
-        "readOnly": true,
-        "isTimestamp": true
-      }
-    },
-    "icon": "info",
-    "table": [
-      "name_resource",
-      "asset",
-      "deliver_by",
-      "observation"
-    ],
-    "required": [
-      "name_resource",
-      "asset",
-      "cape",
-      "deliver_by"
-    ],
-    "filters": [
-      "name_resource",
-      "serial_number",
-      "cape",
-      "deliver_by"
-    ],
-    "presets": [
-      "crud"
-    ],
-    "search": {
-      "indexes": [
-        "name_resource"
-      ],
-      "placeholder": "Insira o nome do equipamento aqui"
-    },
-    "actions": {
-      "spawnAdd": {
-        "label": "action.add",
-        "event": "spawnAdd",
-        "icon": "plus",
-        "button": true,
-        "translate": true
-      }
-    },
-    "individualActions": {
-      "spawnEdit": {
-        "label": "action.edit",
-        "event": "spawnEdit",
-        "icon": "pencil-simple",
-        "translate": true
-      },
-      "viewItem": {
-        "label": "action.view",
-        "icon": "eye",
-        "translate": true,
-        "route": {
-          "name": "/dashboard/:collection/:id",
-          "setItem": true
-        }
-      },
-      "remove": {
-        "label": "action.remove",
-        "icon": "trash",
-        "ask": true,
-        "translate": true
-      }
-    }
-  },
   "tempFile": {
     "$id": "tempFile",
     "icon": "file",
@@ -457,7 +474,6 @@ declare type MirrorDescriptions = {
         "items": {
           "type": "string",
           "enum": [
-            "root",
             "rh"
           ]
         },
@@ -612,6 +628,38 @@ declare type MirrorDescriptions = {
 
 
 declare type MirrorRouter = {
+  "/asset/get": {
+    "POST": {
+      "roles": [
+        "root"
+      ],
+      "builtin": true
+    }
+  },
+  "/asset/getAll": {
+    "POST": {
+      "roles": [
+        "root"
+      ],
+      "builtin": true
+    }
+  },
+  "/asset/insert": {
+    "POST": {
+      "roles": [
+        "root"
+      ],
+      "builtin": true
+    }
+  },
+  "/asset/remove": {
+    "POST": {
+      "roles": [
+        "root"
+      ],
+      "builtin": true
+    }
+  },
   "/employee/get": {
     "POST": {
       "roles": [
@@ -644,7 +692,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment/get": {
+  "/equipment_Release/get": {
     "POST": {
       "roles": [
         "root"
@@ -652,7 +700,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment/getAll": {
+  "/equipment_Release/getAll": {
     "POST": {
       "roles": [
         "root"
@@ -660,7 +708,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment/insert": {
+  "/equipment_Release/insert": {
     "POST": {
       "roles": [
         "root"
@@ -668,7 +716,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment/remove": {
+  "/equipment_Release/remove": {
     "POST": {
       "roles": [
         "root"
@@ -708,38 +756,6 @@ declare type MirrorRouter = {
     }
   },
   "/file/removeAll": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/info/get": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/info/getAll": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/info/insert": {
-    "POST": {
-      "roles": [
-        "root"
-      ],
-      "builtin": true
-    }
-  },
-  "/info/remove": {
     "POST": {
       "roles": [
         "root"

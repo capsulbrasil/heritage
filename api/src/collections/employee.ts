@@ -8,7 +8,7 @@ export const employee = extendEmployeeCollection({
             if: {
               not: {
                 operator: "equal",
-                term1: "employee_status",
+                term1: "is_active",
                 term2: true
               }
             }

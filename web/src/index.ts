@@ -19,10 +19,10 @@ const options = defineOptions({
     },
   },
   menuSchema: [
-    "/dashboard/index",
-    "/dashboard/user",
+    "/dashboard/equipment_release",
+    "/dashboard/asset",
     "/dashboard/employee",
-    "/dashboard/equipment"
+    "/dashboard/user"
   ],
 })
 
