@@ -15,12 +15,6 @@ declare type MirrorDescriptions = {
       "name": {
         "type": "string"
       },
-      "type": {
-        "enum": [
-          "physical",
-          "digital"
-        ]
-      },
       "code": {
         "type": "string"
       },
@@ -53,7 +47,6 @@ declare type MirrorDescriptions = {
     },
     "icon": "desktop-tower",
     "table": [
-      "type",
       "name",
       "code",
       "includes_accessories",
@@ -61,14 +54,12 @@ declare type MirrorDescriptions = {
       "observation"
     ],
     "required": [
-      "type",
       "name",
       "code",
       "includes_accessories",
       "registered_by"
     ],
     "filters": [
-      "type",
       "name",
       "includes_accessories",
       "registered_by"
@@ -78,7 +69,6 @@ declare type MirrorDescriptions = {
     ],
     "search": {
       "indexes": [
-        "type",
         "name",
         "code"
       ],
@@ -132,6 +122,18 @@ declare type MirrorDescriptions = {
       "is_active": {
         "type": "boolean"
       },
+      "picture_file": {
+        "$ref": "file",
+        "accept": [
+          "image/*"
+        ],
+        "indexes": [
+          "name",
+          "link",
+          "type",
+          "size"
+        ]
+      },
       "admission_date": {
         "type": "string",
         "format": "date"
@@ -160,14 +162,13 @@ declare type MirrorDescriptions = {
       "name",
       "corporate_email",
       "is_active",
-      "arrive_date",
+      "admission_date",
       "exit_date"
     ],
     "required": [
       "name",
       "corporate_email",
-      "contact",
-      "is_active"
+      "contact"
     ],
     "presets": [
       "crud"
@@ -218,13 +219,17 @@ declare type MirrorDescriptions = {
       }
     }
   },
-  "equipment_Release": {
-    "$id": "equipment_Release",
+  "equipmentRelease": {
+    "$id": "equipmentRelease",
     "properties": {
       "equipments": {
         "type": "array",
         "items": {
           "$ref": "asset",
+          "populate": [
+            "name",
+            "code"
+          ],
           "indexes": [
             "name"
           ]
@@ -232,12 +237,25 @@ declare type MirrorDescriptions = {
       },
       "delivered_to": {
         "$ref": "employee",
+        "populate": [
+          "name",
+          "corporate_email",
+          "contact",
+          "is_active",
+          "picture_file",
+          "admission_date",
+          "exit_date"
+        ],
         "indexes": [
           "name"
         ]
       },
       "delivered_by": {
         "$ref": "user",
+        "populate": [
+          "name",
+          "email"
+        ],
         "indexes": [
           "name"
         ]
@@ -267,7 +285,8 @@ declare type MirrorDescriptions = {
     },
     "icon": "gauge",
     "table": [
-      "delivered_to"
+      "delivered_to",
+      "delivered_by"
     ],
     "required": [
       "equipments",
@@ -692,7 +711,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment_Release/get": {
+  "/equipmentRelease/get": {
     "POST": {
       "roles": [
         "root"
@@ -700,7 +719,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment_Release/getAll": {
+  "/equipmentRelease/getAll": {
     "POST": {
       "roles": [
         "root"
@@ -708,7 +727,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment_Release/insert": {
+  "/equipmentRelease/insert": {
     "POST": {
       "roles": [
         "root"
@@ -716,7 +735,7 @@ declare type MirrorRouter = {
       "builtin": true
     }
   },
-  "/equipment_Release/remove": {
+  "/equipmentRelease/remove": {
     "POST": {
       "roles": [
         "root"

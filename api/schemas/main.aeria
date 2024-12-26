@@ -3,6 +3,7 @@ collection TempFile extends aeria.tempFile {}
 collection User extends aeria.user {
   properties {
     name str
+    email str
     roles []enum @values([
       "rh"
     ])
@@ -22,6 +23,7 @@ collection Employee {
     corporate_email str
     contact str
     is_active bool
+    picture_file File @accept(["image/*"])
     admission_date str @format("date")
     exit_date str @format("date")
   }
@@ -38,13 +40,12 @@ collection Employee {
     name
     corporate_email
     contact
-    is_active
   }
   table{
     name
     corporate_email
     is_active
-    arrive_date
+    admission_date
     exit_date
   }
 }
@@ -53,7 +54,7 @@ collection Asset {
   icon "desktop-tower"
   properties {
     name str
-    type enum @values(["physical", "digital"])
+    // type enum @values(["physical", "digital"])
     code str
     includes_accessories bool
     registered_by User
@@ -69,14 +70,14 @@ collection Asset {
     crud
   }
   required{
-    type
+    // type
     name
     code
     includes_accessories
     registered_by
   }
   table{
-    type
+    // type
     name
     code
     includes_accessories
@@ -84,7 +85,7 @@ collection Asset {
     observation
   }
   filters{
-    type
+    // type
     name
     includes_accessories
     registered_by
@@ -92,19 +93,19 @@ collection Asset {
   search{
     placeholder "Insira a pesquisa aqui"
     indexes {
-      type
+      // type
       name
       code
     }
   }
 }
 
-collection Equipment_Release {
+collection EquipmentRelease {
   icon "gauge"
   properties {
-    equipments []Asset
-    delivered_to Employee 
-    delivered_by User
+    equipments []Asset @populate([name, code])
+    delivered_to Employee @populate([name, corporate_email, contact, is_active, picture_file, admission_date, exit_date])
+    delivered_by User  @populate([name, email])
     allocation_date str @format("date-time")
     collection_date str @format("date-time")
   }
@@ -132,6 +133,7 @@ collection Equipment_Release {
   }
   table{
     delivered_to
+    delivered_by
   }
 }
 

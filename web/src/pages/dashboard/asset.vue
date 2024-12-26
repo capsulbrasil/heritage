@@ -2,13 +2,13 @@
 
 definePage({
     meta: {
-        title: 'Employee',
-        icon: 'folder-user',
+        title: 'Assets',
+        icon: 'desktop-tower',
     },
 });
 </script>
 
 <template>
-    <aeria-crud collection="employee">
+    <aeria-crud collection="asset">
     </aeria-crud>
 </template>
