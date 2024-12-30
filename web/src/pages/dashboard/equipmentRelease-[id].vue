@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { type CollectionItemWithId } from '@aeriajs/types';
+import { ref, onMounted } from 'vue';
+
 
 definePage({
     props: true,
@@ -10,6 +12,8 @@ const employeeProps = defineProps<Props>()
 
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref<CollectionItemWithId<'equipmentRelease'>[]>([])
+
+const { error, result } = await aeria().getEquipmentsBorrowedByUser()
 
 type Props = {
     id: String
@@ -34,16 +38,6 @@ onMounted(async () => {
     if (equipmentReleaseError) {
         return;
     }
-
-
-    equipments.value = equipmentReleaseResult.data.flatMap((item: any) =>
-        item.equipments.map((equipment: any) => ({
-            name: equipment.name,
-            code: equipment.code,
-            allocation_date: item.allocation_date,
-            collection_date: item.collection_date,
-        }))
-    );
 });
 
 </script>
