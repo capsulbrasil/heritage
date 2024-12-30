@@ -64,7 +64,7 @@ onMounted(async () => {
                             class="tw-text-[12pt]">{{ row[column]?.name || "-" }}
                         </aeria-icon>
                     </div>
-                    <div class="tw-text-[10pt] tw-opacity-60 tw-cursor-pointer" @click="navigateToEquipment(row._id)">
+                    <div class="tw-text-[10pt] tw-opacity-60 tw-cursor-pointer linked-text" @click="navigateToEquipment(row._id)">
                         {{ row[column]?.contact || "-" }} -
                         {{ row[column]?.corporate_email }}
                     </div>
