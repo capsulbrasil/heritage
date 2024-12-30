@@ -1,6 +1,5 @@
 import { createRouter } from 'aeria'
-import { equipmentRouter } from './EquipmentsBorrowoedByUser.js'
+import { equipmentRouter } from './EquipmentsBorrowedByUser.js'
 
 export const router = createRouter()
-router.group('/getEquipmentsBorrowoedByUser', equipmentRouter)
-
+router.group('/equipmentEmployee', equipmentRouter)

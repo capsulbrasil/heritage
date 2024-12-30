@@ -2,7 +2,7 @@ import { createRouter, HTTPStatus, Result } from "aeria";
 export const equipmentRouter = createRouter();
 
 equipmentRouter.POST(
-    "/getEquipmentsBorrowoedByUser",
+    "/getEquipmentsBorrowedByUser",
     async (context) => {
         const employeeId = context.token?.sub;
 
@@ -13,18 +13,28 @@ equipmentRouter.POST(
         // Simulação de dados emprestados armazenados na coleção EquipmentRelease
         const borrowedEquipments = await context.collections.equipmentRelease.model.aggregate([
             {
-                $match: { delivered_to: employeeId },
+                $match: {
+                    delivered_to: employeeId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'asset',
+                    localField: 'equipments',
+                    foreignField: '_id',
+                    as: 'equipmentsArray'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$equipmentsArray'
+                }
             },
             {
                 $project: {
-                    equipments: {
-                        $reduce: {
-                            input: "$equipments",
-                            initialValue: [],
-                            in: { $concatArrays: ["$$value", "$$this"] },
-                        },
-                    },
-                },
+                    _id: 0,
+                    equipmentsArray: 1
+                }
             },
         ]).toArray();
 

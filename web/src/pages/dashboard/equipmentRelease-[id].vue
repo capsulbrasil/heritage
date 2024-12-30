@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type CollectionItemWithId } from '@aeriajs/types';
 import { ref, onMounted } from 'vue';
+import EquipmentRelease from './equipmentRelease.vue';
 
 
 definePage({
@@ -13,7 +14,7 @@ const employeeProps = defineProps<Props>()
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref<CollectionItemWithId<'equipmentRelease'>[]>([])
 
-const { error, result } = await aeria().equipmentRelease.
+const { error, result } = await aeria().equipmentEmployee.getEquipmentsBorrowedByUser.POST()
 
 type Props = {
     id: String
@@ -38,6 +39,8 @@ onMounted(async () => {
     if (equipmentReleaseError) {
         return;
     }
+    EquipmentRelease.value = equipmentReleaseResult;
+
 });
 
 </script>
@@ -99,8 +102,7 @@ onMounted(async () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="equipment in equipments" :key="equipment._id"
-                            class="tw-border-b tw-border-gray-700">
+                        <tr v-for="equipment in equipments" :key="equipment._id" class="tw-border-b tw-border-gray-700">
                             <td class="tw-py-2 tw-px-4">{{ equipment.name }}</td>
                             <td class="tw-py-2 tw-px-4">{{ equipment.code }}</td>
                             <td class="tw-py-2 tw-px-4">{{ formatDateTime(equipment.allocation_date) }}</td>

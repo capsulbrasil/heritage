@@ -873,6 +873,9 @@ declare type MirrorRouter = {
         "root"
       ]
     }
+  },
+  "/equipmentEmployee/getEquipmentsBorrowedByUser": {
+    "POST": null
   }
 }
 
