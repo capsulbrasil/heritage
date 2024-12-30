@@ -107,7 +107,7 @@ collection EquipmentRelease {
     delivered_to Employee @populate([name, corporate_email, contact, is_active, picture_file, admission_date, exit_date])
     delivered_by User  @populate([name, email])
     allocation_date str @format("date-time")
-    collection_date str @format("date-time")
+    collection_date bool 
   }
   functions {
     get @expose(true)

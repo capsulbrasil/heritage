@@ -18,29 +18,37 @@ type Props = {
 onMounted(async () => {
     const { error: employeeError, result: employeeResult } = await aeria.employee.get.POST({
         filters: {
-            _id: employeeProps.id
-        }
-    })
+            _id: employeeProps.id,
+        },
+    });
     if (employeeError) {
-        return
+        return;
     }
-    employee.value = employeeResult
+    employee.value = employeeResult;
 
     const { error: equipmentReleaseError, result: equipmentReleaseResult } = await aeria.equipmentRelease.getAll.POST({
         filters: {
             delivered_to: employeeProps.id,
-        }
-    })
+        },
+    });
     if (equipmentReleaseError) {
-        return
+        return;
     }
-    equipments.value = equipmentReleaseResult.data
-})
+
+
+    equipments.value = equipmentReleaseResult.data.flatMap((item: any) =>
+        item.equipments.map((equipment: any) => ({
+            name: equipment.name,
+            code: equipment.code,
+            allocation_date: item.allocation_date,
+            collection_date: item.collection_date,
+        }))
+    );
+});
 
 </script>
 
 <template>
-
     <div v-if="employee && equipments">
         <div
             class="tw-bg-[color:var(--theme-background-color-shade-5)] tw-shadow tw-rounded-lg tw-mx-auto tw-p-4 tw-flex tw-flex-col tw-space-y-4">
@@ -59,14 +67,27 @@ onMounted(async () => {
                         <!-- Informações principais -->
                         <div>
                             <p class="tw-font-bold">Nome: {{ employee.name }}</p>
-                            <p>Email corporativo: nikolas@gmail.com</p>
-                            <p>Telefone Pessoal: 3443434343</p>
+                            <p>Email corporativo: {{ employee.corporate_email }}</p>
+                            <p>Telefone Pessoal: {{ employee.contact }}</p>
                         </div>
                         <!-- Status -->
                         <div>
-                            <p>Status do Funcionário: <span class="tw-font-bold">Ativo ou Desativado</span></p>
-                            <p>Data de Admissão: <span class="tw-font-bold">23/03/2033</span></p>
-                            <p>Data de Demissão: <span class="tw-font-bold">23/03/2023</span></p>
+                            <div v-if="employee.is_active == true">
+                                <p>Status do Funcionário:
+                                    <span class="tw-font-bold">Ativo</span>
+                                <p>Data de Admissão: <span class="tw-font-bold">{{
+                                    formatDateTime(employee.admission_date) }}</span></p>
+                                </p>
+                            </div>
+                            <div v-else>
+                                <p>Status do Funcionário:
+                                    <span class="tw-font-bold">Inativo</span>
+                                <p>Data de Admissão: <span class="tw-font-bold">{{
+                                    formatDateTime(employee.admission_date) }}</span></p>
+                                <p>Data de Demissão: <span class="tw-font-bold">{{ formatDateTime(employee.exit_date)
+                                        }}</span></p>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -84,17 +105,15 @@ onMounted(async () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="tw-border-b tw-border-gray-700">
-                            <td class="tw-py-2 tw-px-4">Notebook Nitro AN515-58</td>
-                            <td class="tw-py-2 tw-px-4">000552</td>
-                            <td class="tw-py-2 tw-px-4">22/12/2024</td>
-                            <td class="tw-py-2 tw-px-4">23/12/2024</td>
-                        </tr>
-                        <tr>
-                            <td class="tw-py-2 tw-px-4">Monitor Acer 324242</td>
-                            <td class="tw-py-2 tw-px-4">034500</td>
-                            <td class="tw-py-2 tw-px-4">11/12/2024</td>
-                            <td class="tw-py-2 tw-px-4">Não recolhido</td>
+                        <tr v-for="equipment in equipments" :key="equipment._id"
+                            class="tw-border-b tw-border-gray-700">
+                            <td class="tw-py-2 tw-px-4">{{ equipment.name }}</td>
+                            <td class="tw-py-2 tw-px-4">{{ equipment.code }}</td>
+                            <td class="tw-py-2 tw-px-4">{{ formatDateTime(equipment.allocation_date) }}</td>
+                            <td class="tw-py-2 tw-px-4">
+                                <span v-if="!equipment.collection_date">Não Recolhido</span>
+                                <span v-else>{{ formatDateTime(equipment.collection_date) }}</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

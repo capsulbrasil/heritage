@@ -265,8 +265,7 @@ declare type MirrorDescriptions = {
         "format": "date-time"
       },
       "collection_date": {
-        "type": "string",
-        "format": "date-time"
+        "type": "boolean"
       },
       "created_at": {
         "type": "string",
