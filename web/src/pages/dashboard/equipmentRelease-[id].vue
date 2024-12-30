@@ -13,7 +13,7 @@ const employeeProps = defineProps<Props>()
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref<CollectionItemWithId<'equipmentRelease'>[]>([])
 
-const { error, result } = await aeria().getEquipmentsBorrowedByUser()
+const { error, result } = await aeria().equipmentRelease.
 
 type Props = {
     id: String
