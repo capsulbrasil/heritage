@@ -875,7 +875,65 @@ declare type MirrorRouter = {
     }
   },
   "/equipmentEmployee/getEquipmentsBorrowedByUser": {
-    "POST": null
+    "POST": {
+      "payload": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          }
+        }
+      },
+      "response": [
+        {
+          "type": "object",
+          "properties": {
+            "_tag": {
+              "const": "Error"
+            },
+            "result": {},
+            "error": {
+              "type": "object",
+              "required": [
+                "httpStatus",
+                "code"
+              ],
+              "properties": {
+                "httpStatus": {
+                  "type": "number"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "_tag": {
+              "const": "Result"
+            },
+            "error": {},
+            "result": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }
 
