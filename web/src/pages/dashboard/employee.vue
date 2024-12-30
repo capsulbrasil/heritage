@@ -5,10 +5,9 @@ definePage({
         title: 'Employee',
         icon: 'folder-user',
     },
-});
+})
 </script>
 
 <template>
-    <aeria-crud collection="employee">
-    </aeria-crud>
+  <aeria-crud collection="employee" />
 </template>

@@ -5,10 +5,9 @@ definePage({
         title: 'Assets',
         icon: 'desktop-tower',
     },
-});
+})
 </script>
 
 <template>
-    <aeria-crud collection="asset">
-    </aeria-crud>
+  <aeria-crud collection="asset" />
 </template>
