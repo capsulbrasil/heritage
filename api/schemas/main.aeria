@@ -32,9 +32,10 @@ collection Employee {
     getAll @expose(true)
     insert @expose(true)
     remove @expose(true)
+    upload @expose(true)
   }
   presets {
-    crud
+    view
   }
   required{
     name
@@ -116,7 +117,7 @@ collection EquipmentRelease {
     remove @expose(true)
   }
   presets {
-    crud
+    edit
   }
   required{
     equipments

@@ -171,7 +171,7 @@ declare type MirrorDescriptions = {
       "contact"
     ],
     "presets": [
-      "crud"
+      "view"
     ],
     "formLayout": {
       "fields": {
@@ -186,22 +186,7 @@ declare type MirrorDescriptions = {
         }
       }
     },
-    "actions": {
-      "spawnAdd": {
-        "label": "action.add",
-        "event": "spawnAdd",
-        "icon": "plus",
-        "button": true,
-        "translate": true
-      }
-    },
     "individualActions": {
-      "spawnEdit": {
-        "label": "action.edit",
-        "event": "spawnEdit",
-        "icon": "pencil-simple",
-        "translate": true
-      },
       "viewItem": {
         "label": "action.view",
         "icon": "eye",
@@ -210,12 +195,6 @@ declare type MirrorDescriptions = {
           "name": "/dashboard/:collection/:id",
           "setItem": true
         }
-      },
-      "remove": {
-        "label": "action.remove",
-        "icon": "trash",
-        "ask": true,
-        "translate": true
       }
     }
   },
@@ -301,40 +280,8 @@ declare type MirrorDescriptions = {
       "collection_date"
     ],
     "presets": [
-      "crud"
-    ],
-    "actions": {
-      "spawnAdd": {
-        "label": "action.add",
-        "event": "spawnAdd",
-        "icon": "plus",
-        "button": true,
-        "translate": true
-      }
-    },
-    "individualActions": {
-      "spawnEdit": {
-        "label": "action.edit",
-        "event": "spawnEdit",
-        "icon": "pencil-simple",
-        "translate": true
-      },
-      "viewItem": {
-        "label": "action.view",
-        "icon": "eye",
-        "translate": true,
-        "route": {
-          "name": "/dashboard/:collection/:id",
-          "setItem": true
-        }
-      },
-      "remove": {
-        "label": "action.remove",
-        "icon": "trash",
-        "ask": true,
-        "translate": true
-      }
-    }
+      "edit"
+    ]
   },
   "file": {
     "$id": "file",
@@ -703,6 +650,14 @@ declare type MirrorRouter = {
     }
   },
   "/employee/remove": {
+    "POST": {
+      "roles": [
+        "root"
+      ],
+      "builtin": true
+    }
+  },
+  "/employee/upload": {
     "POST": {
       "roles": [
         "root"

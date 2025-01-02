@@ -2,6 +2,7 @@
 import { type CollectionItemWithId } from '@aeriajs/types'
 import { useStore } from 'aeria-ui'
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 definePage({
     props: true,
@@ -11,6 +12,7 @@ definePage({
 })
 
 const metaStore = useStore('meta')
+const router = useRouter()
 
 type Props = {
     id: string
@@ -20,11 +22,16 @@ const employeeProps = defineProps<Props>()
 
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref<CollectionItemWithId<'equipmentRelease'>[]>([])
+const assetDetails = ref<CollectionItemWithId<'asset'> | null>(null)
 
 //eslint-disable-next-line
 const { error: _error, result: _result } = await aeria.equipmentEmployee.getEquipmentsBorrowedByUser.POST({
     employeeId: employeeProps.id,
 })
+
+const navigateToAsset = (id: string) => {
+    router.push(`/dashboard/assets-${id}`)
+}
 
 onMounted(async () => {
     const { error: employeeError, result: employeeResult } = await aeria.employee.get.POST({
@@ -58,6 +65,24 @@ onMounted(async () => {
     }
 
     equipments.value = equipmentReleaseResult.data
+
+    async function fetchAssetById(assetId: string) {
+        const { error: assetError, result: assetResult } = await aeria.asset.get.POST({
+            filters: {
+                _id: assetId,
+            },
+        })
+
+        if (assetError) {
+            metaStore.$actions.spawnModal({
+                title: 'Ops...',
+                body: 'Erro ao buscar informações do asset: ' + assetError.message || assetError.code,
+            })
+            return
+        }
+
+        assetDetails.value = assetResult
+    }
 })
 
 </script>
@@ -115,9 +140,10 @@ onMounted(async () => {
                     </thead>
                     <tbody>
                         <template v-for="equipment in equipments" :key="equipment._id">
-                            <tr v-for="asset in equipment.equipments" :key="asset.code"
+                            <tr v-for="asset in equipment.equipments" :key="asset._id.toString()"
                                 class="tw-border-b tw-border-gray-700">
-                                <td class="tw-py-2 tw-px-4">{{ asset.name }}</td>
+                                <td class="tw-py-2 tw-px-4 tw-cursor-pointer"
+                                    @click="navigateToAsset(asset._id.toString())">{{ asset.name }}</td>
                                 <td class="tw-py-2 tw-px-4">{{ asset.code }}</td>
                                 <td class="tw-py-2 tw-px-4">{{ formatDateTime(equipment.allocation_date) }}</td>
                                 <td class="tw-py-2 tw-px-4">
