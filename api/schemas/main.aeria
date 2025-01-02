@@ -108,7 +108,8 @@ collection EquipmentRelease {
     delivered_to Employee @populate([name, corporate_email, contact, is_active, picture_file, admission_date, exit_date])
     delivered_by User  @populate([name, email])
     allocation_date str @format("date-time")
-    collection_date bool 
+    was_collected bool
+    collection_date str @format("date-time")
   }
   functions {
     get @expose(true)
@@ -117,7 +118,7 @@ collection EquipmentRelease {
     remove @expose(true)
   }
   presets {
-    edit
+    crud
   }
   required{
     equipments

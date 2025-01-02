@@ -243,8 +243,12 @@ declare type MirrorDescriptions = {
         "type": "string",
         "format": "date-time"
       },
-      "collection_date": {
+      "was_collected": {
         "type": "boolean"
+      },
+      "collection_date": {
+        "type": "string",
+        "format": "date-time"
       },
       "created_at": {
         "type": "string",
@@ -280,8 +284,51 @@ declare type MirrorDescriptions = {
       "collection_date"
     ],
     "presets": [
-      "edit"
-    ]
+      "crud"
+    ],
+    "formLayout": {
+      "fields": {
+        "collection_date": {
+          "if": {
+            "operator": "equal",
+            "term1": "was_collected",
+            "term2": true
+          }
+        }
+      }
+    },
+    "actions": {
+      "spawnAdd": {
+        "label": "action.add",
+        "event": "spawnAdd",
+        "icon": "plus",
+        "button": true,
+        "translate": true
+      }
+    },
+    "individualActions": {
+      "spawnEdit": {
+        "label": "action.edit",
+        "event": "spawnEdit",
+        "icon": "pencil-simple",
+        "translate": true
+      },
+      "viewItem": {
+        "label": "action.view",
+        "icon": "eye",
+        "translate": true,
+        "route": {
+          "name": "/dashboard/:collection/:id",
+          "setItem": true
+        }
+      },
+      "remove": {
+        "label": "action.remove",
+        "icon": "trash",
+        "ask": true,
+        "translate": true
+      }
+    }
   },
   "file": {
     "$id": "file",

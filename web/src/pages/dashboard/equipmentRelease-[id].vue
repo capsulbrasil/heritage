@@ -11,6 +11,7 @@ definePage({
     },
 })
 
+const panelVisible = ref(false)
 const metaStore = useStore('meta')
 const router = useRouter()
 
@@ -22,15 +23,24 @@ const employeeProps = defineProps<Props>()
 
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref<CollectionItemWithId<'equipmentRelease'>[]>([])
-const assetDetails = ref<CollectionItemWithId<'asset'> | null>(null)
+const asset = ref<CollectionItemWithId<'asset'> | null>(null)
 
-//eslint-disable-next-line
-const { error: _error, result: _result } = await aeria.equipmentEmployee.getEquipmentsBorrowedByUser.POST({
-    employeeId: employeeProps.id,
-})
+async function fetchAssetById(assetId: string) {
+    const { error: assetError, result: assetResult } = await aeria.asset.get.POST({
+        filters: {
+            _id: assetId,
+        },
+    })
 
-const navigateToAsset = (id: string) => {
-    router.push(`/dashboard/assets-${id}`)
+    if (assetError) {
+        metaStore.$actions.spawnModal({
+            title: 'Ops...',
+            body: 'Erro ao buscar informações do asset: ' + assetError.message || assetError.code,
+        })
+        return
+    }
+
+    asset.value = assetResult
 }
 
 onMounted(async () => {
@@ -65,27 +75,9 @@ onMounted(async () => {
     }
 
     equipments.value = equipmentReleaseResult.data
-
-    async function fetchAssetById(assetId: string) {
-        const { error: assetError, result: assetResult } = await aeria.asset.get.POST({
-            filters: {
-                _id: assetId,
-            },
-        })
-
-        if (assetError) {
-            metaStore.$actions.spawnModal({
-                title: 'Ops...',
-                body: 'Erro ao buscar informações do asset: ' + assetError.message || assetError.code,
-            })
-            return
-        }
-
-        assetDetails.value = assetResult
-    }
 })
-
 </script>
+
 <template>
     <div v-if="employee && equipments">
         <div
@@ -143,7 +135,8 @@ onMounted(async () => {
                             <tr v-for="asset in equipment.equipments" :key="asset._id.toString()"
                                 class="tw-border-b tw-border-gray-700">
                                 <td class="tw-py-2 tw-px-4 tw-cursor-pointer"
-                                    @click="navigateToAsset(asset._id.toString())">{{ asset.name }}</td>
+                                    @click="fetchAssetById(asset._id.toString()); panelVisible = true">{{ asset.name }}
+                                </td>
                                 <td class="tw-py-2 tw-px-4">{{ asset.code }}</td>
                                 <td class="tw-py-2 tw-px-4">{{ formatDateTime(equipment.allocation_date) }}</td>
                                 <td class="tw-py-2 tw-px-4">
@@ -158,4 +151,41 @@ onMounted(async () => {
             </div>
         </div>
     </div>
+
+    <aeria-panel v-model="panelVisible" float close-hint title="Asset Details" @overlay-click="panelVisible = false">
+    <div v-if="asset" class="tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center ">
+        <h1 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-4">{{ asset.name }}</h1>
+
+        <div class="tw-w-full tw-max-w-md tw-space-y-4">
+            <div class="tw-flex tw-justify-between tw-border-b tw-pb-2">
+                <span class="tw-font-bold">Nº de Série:</span>
+                <span>{{ asset.code }}</span>
+            </div>
+
+            <div class="tw-flex tw-justify-between tw-border-b tw-pb-2">
+                <span class="tw-font-bold">Inclui Acessórios:</span>
+                <span>{{ asset.includes_accessories ? 'Sim' : 'Não' }}</span>
+            </div>
+
+            <div class="tw-flex tw-justify-between tw-border-b tw-pb-2">
+                <span class="tw-font-bold">Registrado por:</span>
+                <span>{{ asset.registered_by?.name }}</span>
+            </div>
+
+            <div class="tw-flex tw-justify-between">
+                <span class="tw-font-bold">Observação:</span>
+                <span>{{ asset.observation || 'Nenhuma' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <template #footer>
+        <div class="tw-w-full tw-flex tw-justify-end tw-px-6 tw-py-4">
+            <aeria-button large @click="panelVisible = false" class="tw-bg-blue-900 tw-text-white">
+                Fechar
+            </aeria-button>
+        </div>
+    </template>
+</aeria-panel>
+
 </template>
