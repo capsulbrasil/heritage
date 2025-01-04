@@ -22,7 +22,7 @@ ptbr,
     },
   },
   menuSchema: [
-    '/dashboard/equipmentRelease',
+    '/dashboard/',
     '/dashboard/asset',
     '/dashboard/employee',
     '/dashboard/user',

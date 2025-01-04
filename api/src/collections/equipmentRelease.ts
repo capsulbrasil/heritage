@@ -13,5 +13,19 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
                 },
             },
         },
+        individualActions: {
+            eye: {
+                label: "Visualizar",
+                icon: "eye",
+            },
+        },
+        tableLayout: {
+            actions: {
+                eye: {
+                    button: true,
+                },
+            },
+        },
     },
 })
+

@@ -297,16 +297,11 @@ declare type MirrorDescriptions = {
         }
       }
     },
-    "actions": {
-      "spawnAdd": {
-        "label": "action.add",
-        "event": "spawnAdd",
-        "icon": "plus",
-        "button": true,
-        "translate": true
-      }
-    },
     "individualActions": {
+      "eye": {
+        "label": "Visualizar",
+        "icon": "eye"
+      },
       "spawnEdit": {
         "label": "action.edit",
         "event": "spawnEdit",
@@ -326,6 +321,22 @@ declare type MirrorDescriptions = {
         "label": "action.remove",
         "icon": "trash",
         "ask": true,
+        "translate": true
+      }
+    },
+    "tableLayout": {
+      "actions": {
+        "eye": {
+          "button": true
+        }
+      }
+    },
+    "actions": {
+      "spawnAdd": {
+        "label": "action.add",
+        "event": "spawnAdd",
+        "icon": "plus",
+        "button": true,
         "translate": true
       }
     }
