@@ -13,6 +13,7 @@ definePage({
 
 const panelVisible = ref(false)
 const metaStore = useStore('meta')
+const employeeStore = useStore('employee')
 const router = useRouter()
 
 type Props = {
@@ -20,6 +21,12 @@ type Props = {
 }
 
 const employeeProps = defineProps<Props>()
+const editPanel = ref(false)
+
+const openEditPanel = () => {
+  employeeStore.$actions.setItem(employee.value)
+  editPanel.value = true
+}
 
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref<CollectionItemWithId<'equipmentRelease'>[]>([])
@@ -79,6 +86,19 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div
+    v-if="hasRoles(['root'])"
+    class="
+      tw-flex
+      tw-flex-wrap
+      tw-gap-2
+      tw-justify-end
+  ">
+    <aeria-button icon="pencil" @click="openEditPanel">
+      Editar
+    </aeria-button>
+  </div>
+
     <div v-if="employee && equipments">
         <div
             class="tw-shadow tw-rounded-lg tw-mx-auto tw-p-4 tw-flex tw-flex-col tw-space-y-4 tw-bg-[color:var(--theme-background-color-shade-5)]">
@@ -187,5 +207,16 @@ onMounted(async () => {
         </div>
     </template>
 </aeria-panel>
+
+  <aeria-insert-panel
+      v-if="editPanel"
+      v-model:visible="editPanel"
+      fixed-right
+      close-hint
+      collection="employee"
+      title="Editar colaborador"
+      @cancel="editPanel = false"
+      @insert="employee = $event as CollectionItemWithId<'employee'>"
+    ></aeria-insert-panel>
 
 </template>
