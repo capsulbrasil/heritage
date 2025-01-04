@@ -246,6 +246,11 @@ declare type MirrorDescriptions = {
           "admission_date",
           "exit_date"
         ],
+        "constraints": {
+          "operator": "equal",
+          "term1": "is_active",
+          "term2": true
+        },
         "indexes": [
           "name"
         ]
