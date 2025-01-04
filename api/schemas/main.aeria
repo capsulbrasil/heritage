@@ -105,7 +105,7 @@ collection EquipmentRelease {
   icon "gauge"
   properties {
     equipments []Asset @populate([name, code])
-    delivered_to Employee @populate([name, corporate_email, contact, is_active, picture_file, admission_date, exit_date])
+    delivered_to Employee @populate([name, corporate_email, contact, is_active, picture_file, admission_date, exit_date]) 
     delivered_by User  @populate([name, email])
     allocation_date str @format("date-time")
     was_collected bool
