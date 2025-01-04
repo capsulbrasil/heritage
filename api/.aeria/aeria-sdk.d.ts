@@ -171,7 +171,7 @@ declare type MirrorDescriptions = {
       "contact"
     ],
     "presets": [
-      "view"
+      "crud"
     ],
     "formLayout": {
       "fields": {
@@ -186,7 +186,22 @@ declare type MirrorDescriptions = {
         }
       }
     },
+    "actions": {
+      "spawnAdd": {
+        "label": "action.add",
+        "event": "spawnAdd",
+        "icon": "plus",
+        "button": true,
+        "translate": true
+      }
+    },
     "individualActions": {
+      "spawnEdit": {
+        "label": "action.edit",
+        "event": "spawnEdit",
+        "icon": "pencil-simple",
+        "translate": true
+      },
       "viewItem": {
         "label": "action.view",
         "icon": "eye",
@@ -195,6 +210,12 @@ declare type MirrorDescriptions = {
           "name": "/dashboard/:collection/:id",
           "setItem": true
         }
+      },
+      "remove": {
+        "label": "action.remove",
+        "icon": "trash",
+        "ask": true,
+        "translate": true
       }
     }
   },
@@ -297,11 +318,16 @@ declare type MirrorDescriptions = {
         }
       }
     },
+    "actions": {
+      "spawnAdd": {
+        "label": "action.add",
+        "event": "spawnAdd",
+        "icon": "plus",
+        "button": true,
+        "translate": true
+      }
+    },
     "individualActions": {
-      "eye": {
-        "label": "Visualizar",
-        "icon": "eye"
-      },
       "spawnEdit": {
         "label": "action.edit",
         "event": "spawnEdit",
@@ -321,22 +347,6 @@ declare type MirrorDescriptions = {
         "label": "action.remove",
         "icon": "trash",
         "ask": true,
-        "translate": true
-      }
-    },
-    "tableLayout": {
-      "actions": {
-        "eye": {
-          "button": true
-        }
-      }
-    },
-    "actions": {
-      "spawnAdd": {
-        "label": "action.add",
-        "event": "spawnAdd",
-        "icon": "plus",
-        "button": true,
         "translate": true
       }
     }
