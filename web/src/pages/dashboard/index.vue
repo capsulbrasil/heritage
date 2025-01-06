@@ -14,14 +14,8 @@ defineProps<Props>()
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref({} as CollectionItemWithId<'equipmentRelease'>[])
 
-const router = useRouter()
-
 type Props = {
   id: String
-}
-
-const navigateToEquipment = (id: string) => {
-  router.push(`/dashboard/equipmentRelease/view/${id}`)
 }
 
 </script>
@@ -50,12 +44,11 @@ const navigateToEquipment = (id: string) => {
           <div
             v-if="row[column]?.is_active == true"
             class="
-              tw-cursor-pointer
+              tw-cursor-default
               linked-text
               tw-w-min
               tw-whitespace-pre
             "
-            @click="navigateToEquipment(row.delivered_to._id)"
           >
             <aeria-icon
               icon="check-circle"
@@ -66,12 +59,11 @@ const navigateToEquipment = (id: string) => {
             </aeria-icon>
             <div
               class="
+              tw-cursor-default
                 tw-text-[10pt]
                 tw-opacity-60
-                tw-cursor-pointer
                 linked-text
               "
-              @click="navigateToEquipment(row.delivered_to._id)"
             >
               {{ row[column]?.contact || "-" }} - {{ row[column]?.corporate_email }}
             </div>
@@ -79,13 +71,12 @@ const navigateToEquipment = (id: string) => {
           <div
             v-else
             class="
-              tw-cursor-pointer
+            tw-cursor-not-allowed
               linked-text
               tw-w-min
               tw-whitespace-pre
-              tw-opacity-50
+              tw-opacity-40
             "
-            @click="navigateToEquipment(row.delivered_to._id)"
           >
             <aeria-icon
               icon="x-circle"
@@ -96,12 +87,11 @@ const navigateToEquipment = (id: string) => {
             </aeria-icon>
             <div
               class="
+              tw-cursor-not-allowed
                 tw-text-[10pt]
                 tw-opacity-60
-                tw-cursor-pointer
                 linked-text
               "
-              @click="navigateToEquipment(row.delivered_to._id)"
             >
               {{ row[column]?.contact || "-" }} - {{ row[column]?.corporate_email }}
             </div>

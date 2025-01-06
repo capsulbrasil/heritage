@@ -118,7 +118,7 @@ collection EquipmentRelease {
     remove @expose(true)
   }
   presets {
-    crud
+    add
   }
   required{
     equipments
