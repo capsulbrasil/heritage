@@ -312,27 +312,11 @@ declare type MirrorDescriptions = {
     "presets": [
       "crud"
     ],
-    "formLayout": {
-      "fields": {
-        "collection_date": {
-          "if": {
-            "operator": "equal",
-            "term1": "was_collected",
-            "term2": true
-          }
-        }
-      }
-    },
-    "actions": {
-      "spawnAdd": {
-        "label": "action.add",
-        "event": "spawnAdd",
-        "icon": "plus",
-        "button": true,
-        "translate": true
-      }
-    },
     "individualActions": {
+      "eye": {
+        "label": "Visualizar",
+        "icon": "eye"
+      },
       "spawnEdit": {
         "label": "action.edit",
         "event": "spawnEdit",
@@ -352,6 +336,33 @@ declare type MirrorDescriptions = {
         "label": "action.remove",
         "icon": "trash",
         "ask": true,
+        "translate": true
+      }
+    },
+    "tableLayout": {
+      "actions": {
+        "eye": {
+          "button": true
+        }
+      }
+    },
+    "formLayout": {
+      "fields": {
+        "collection_date": {
+          "if": {
+            "operator": "equal",
+            "term1": "was_collected",
+            "term2": true
+          }
+        }
+      }
+    },
+    "actions": {
+      "spawnAdd": {
+        "label": "action.add",
+        "event": "spawnAdd",
+        "icon": "plus",
+        "button": true,
         "translate": true
       }
     }

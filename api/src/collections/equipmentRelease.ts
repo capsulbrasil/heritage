@@ -2,6 +2,12 @@ import { extendEquipmentReleaseCollection } from '../../.aeria/out/collections/e
 
 export const equipmentRelease = extendEquipmentReleaseCollection({
   description: {
+    individualActions: {
+      eye: {
+        label: "Visualizar",
+        icon: "eye",
+      },
+    },
     properties: {
       delivered_to: {
         $ref: 'employee',
@@ -11,6 +17,13 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
           term2: true,
         }
       }
+    },
+    tableLayout:{
+      actions: {
+        eye: {
+          button: true,
+        },
+      },
     },
     formLayout: {
       fields: {
