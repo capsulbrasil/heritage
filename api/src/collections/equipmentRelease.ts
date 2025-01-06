@@ -3,7 +3,7 @@ import { extendEquipmentReleaseCollection } from '../../.aeria/out/collections/e
 export const equipmentRelease = extendEquipmentReleaseCollection({
   description: {
     individualActions: {
-      eye: {
+      viewContent: {
         label: "Visualizar",
         icon: "eye",
       },
@@ -20,7 +20,7 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
     },
     tableLayout:{
       actions: {
-        eye: {
+        viewContent: {
           button: true,
         },
       },

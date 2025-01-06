@@ -293,8 +293,7 @@ declare type MirrorDescriptions = {
     },
     "icon": "gauge",
     "table": [
-      "delivered_to",
-      "delivered_by"
+      "delivered_to"
     ],
     "required": [
       "equipments",
@@ -312,8 +311,14 @@ declare type MirrorDescriptions = {
     "presets": [
       "crud"
     ],
+    "search": {
+      "indexes": [
+        "delivered_to"
+      ],
+      "placeholder": "Insira a pesquisa aqui"
+    },
     "individualActions": {
-      "eye": {
+      "viewContent": {
         "label": "Visualizar",
         "icon": "eye"
       },
@@ -341,7 +346,7 @@ declare type MirrorDescriptions = {
     },
     "tableLayout": {
       "actions": {
-        "eye": {
+        "viewContent": {
           "button": true
         }
       }

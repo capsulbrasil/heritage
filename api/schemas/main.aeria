@@ -135,7 +135,12 @@ collection EquipmentRelease {
   }
   table{
     delivered_to
-    delivered_by
+  }
+  search{
+    placeholder "Insira a pesquisa aqui"
+    indexes {
+      delivered_to
+    }
   }
 }
 

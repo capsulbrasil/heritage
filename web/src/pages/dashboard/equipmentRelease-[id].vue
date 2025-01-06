@@ -227,8 +227,15 @@ onMounted(async () => {
                   tw-py-2
                   tw-px-4
                 ">
+                Quem entregou
+              </th>
+              <th class="
+                  tw-py-2
+                  tw-px-4
+                ">
 
               </th>
+
             </tr>
           </thead>
           <tbody>
@@ -261,6 +268,12 @@ onMounted(async () => {
                   ">
                   <span v-if="!equipment.collection_date">Não Recolhido</span>
                   <span v-else>{{ formatDateTime(equipment.collection_date) }}</span>
+                </td>
+                <td class="
+                    tw-py-2
+                    tw-px-4
+                  ">
+                  <span>{{ equipment.delivered_by.name }}</span>
                 </td>
                 <td class="
                     tw-py-2
