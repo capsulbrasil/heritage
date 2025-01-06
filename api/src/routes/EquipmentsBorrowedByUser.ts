@@ -36,7 +36,7 @@ equipmentRouter.POST(
       },
     ]).toArray()
 
-    if (!borrowedEquipments || borrowedEquipments.length === 0) {
+    if (borrowedEquipments.length === 0) {
       return context.error(HTTPStatus.NotFound, {
         code: 'NO_EQUIPMENTS_FOUND',
       })

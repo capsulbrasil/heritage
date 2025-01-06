@@ -4,8 +4,12 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
   description: {
     individualActions: {
       viewContent: {
-        label: "Visualizar",
-        icon: "eye",
+        label: 'Visualizar',
+        icon: 'eye',
+        requires: [
+          '_id',
+          'delivered_to',
+        ],
       },
     },
     properties: {
@@ -15,10 +19,10 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
           operator: 'equal',
           term1: 'is_active',
           term2: true,
-        }
-      }
+        },
+      },
     },
-    tableLayout:{
+    tableLayout: {
       actions: {
         viewContent: {
           button: true,
