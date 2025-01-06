@@ -4,7 +4,7 @@ import { type CollectionItemWithId } from '@aeriajs/types'
 definePage({
   props: true,
   meta: {
-    title: 'Equipment Release',
+    title: 'Equipment_Release',
     icon: 'gauge',
   },
 })
