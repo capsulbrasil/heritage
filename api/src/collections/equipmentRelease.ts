@@ -1,23 +1,20 @@
-import { extendEquipmentReleaseCollection } from '../../.aeria/out/collections/equipmentRelease.mjs'
+import { extendEquipmentReleaseCollection } from "../../.aeria/out/collections/equipmentRelease.mjs";
 
 export const equipmentRelease = extendEquipmentReleaseCollection({
   description: {
     individualActions: {
       viewContent: {
-        label: 'Visualizar',
-        icon: 'eye',
-        requires: [
-          '_id',
-          'delivered_to',
-        ],
+        label: "Ver Mais",
+        icon: "eye",
+        requires: ["_id", "delivered_to"],
       },
     },
     properties: {
       delivered_to: {
-        $ref: 'employee',
+        $ref: "employee",
         constraints: {
-          operator: 'equal',
-          term1: 'is_active',
+          operator: "equal",
+          term1: "is_active",
           term2: true,
         },
       },
@@ -33,13 +30,12 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
       fields: {
         collection_date: {
           if: {
-            operator: 'equal',
-            term1: 'was_collected',
+            operator: "equal",
+            term1: "was_collected",
             term2: true,
           },
         },
       },
     },
   },
-})
-
+});

@@ -320,7 +320,7 @@ declare type MirrorDescriptions = {
     },
     "individualActions": {
       "viewContent": {
-        "label": "Visualizar",
+        "label": "Ver Mais",
         "icon": "eye",
         "requires": [
           "_id",
