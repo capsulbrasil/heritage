@@ -2,7 +2,6 @@
 import { type CollectionItemWithId } from '@aeriajs/types'
 import { useStore } from 'aeria-ui'
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 
 definePage({
   props: true,
@@ -14,7 +13,6 @@ definePage({
 const panelVisible = ref(false)
 const metaStore = useStore('meta')
 const employeeStore = useStore('employee')
-const router = useRouter()
 
 type Props = {
   id: string
@@ -86,19 +84,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="hasRoles(['root', 'rh'])" class="
+  <div
+    v-if="hasRoles(['root', 'rh'])"
+    class="
       tw-flex
       tw-flex-wrap
       tw-gap-2
       tw-justify-end
-    ">
-    <aeria-button icon="pencil" @click="openEditPanel">
+    "
+  >
+    <aeria-button
+      icon="pencil"
+      @click="openEditPanel"
+    >
       Editar
     </aeria-button>
   </div>
 
   <div v-if="employee && equipments">
-    <div class="
+    <div
+      class="
         tw-shadow
         tw-rounded-lg
         tw-mx-auto
@@ -108,15 +113,19 @@ onMounted(async () => {
         tw-space-y-4
 
         tw-bg-[color:var(--theme-background-color-shade-5)]
-      ">
+      "
+    >
       <!-- Linha principal com imagem e informações -->
-      <div class="
+      <div
+        class="
           tw-flex
           tw-items-center
           tw-space-x-4
-        ">
+        "
+      >
         <!-- Imagem do perfil -->
-        <div class="
+        <div
+          class="
             tw-flex
             tw-items-center
             tw-justify-center
@@ -124,8 +133,10 @@ onMounted(async () => {
             tw-w-24
             tw-h-24
             tw-rounded-full
-          ">
-          <aeria-picture class="
+          "
+        >
+          <aeria-picture
+            class="
               tw-overflow-hidden
               tw-rounded-full
               tw-w-24
@@ -133,16 +144,21 @@ onMounted(async () => {
               tw-shadow-md
               tw-border-4
               tw-border-white
-            " :url="employee.picture_file?.link" alt="Foto do Funcionário" />
+            "
+            :url="employee.picture_file?.link"
+            alt="Foto do Funcionário"
+          />
         </div>
 
         <!-- Informações do funcionário -->
         <div class="tw-flex-1">
-          <div class="
+          <div
+            class="
               tw-grid
               tw-grid-cols-2
               tw-gap-4
-            ">
+            "
+          >
             <!-- Informações principais -->
             <div>
               <p class="tw-font-bold">
@@ -172,7 +188,7 @@ onMounted(async () => {
                 </p>
                 <p>
                   Data de Demissão: <span class="tw-font-bold">{{ formatDateTime(employee.exit_date)
-                    }}</span>
+                  }}</span>
                 </p>
               </div>
             </div>
@@ -181,105 +197,143 @@ onMounted(async () => {
       </div>
 
       <!-- Tabela de recursos -->
-      <div class="
+      <div
+        class="
           tw-rounded-lg
           tw-p-4
           tw-shadow-md
 
           tw-bg-[color:var(--theme-background-color-shade-2)]
-        ">
-        <table class="
+        "
+      >
+        <table
+          class="
             tw-w-full
             tw-table-auto
             tw-text-left
             tw-text-sm
-          ">
-          <thead class="
+          "
+        >
+          <thead
+            class="
               tw-border-b
               tw-border-gray-700
-            ">
+            "
+          >
             <tr>
-              <th class="
+              <th
+                class="
                   tw-py-2
                   tw-px-4
-                ">
+                "
+              >
                 Recurso Atribuído
               </th>
-              <th class="
+              <th
+                class="
                   tw-py-2
                   tw-px-4
-                ">
+                "
+              >
                 Patrimônio
               </th>
-              <th class="
+              <th
+                class="
                   tw-py-2
                   tw-px-4
-                ">
+                "
+              >
                 Data de Alocação
               </th>
-              <th class="
+              <th
+                class="
                   tw-py-2
                   tw-px-4
-                ">
+                "
+              >
                 Data de Recolhimento
               </th>
-              <th class="
+              <th
+                class="
                   tw-py-2
                   tw-px-4
-                ">
+                "
+              >
                 Quem entregou
               </th>
-              <th class="
+              <th
+                class="
                   tw-py-2
                   tw-px-4
-                ">
-
-              </th>
-
+                "
+              />
             </tr>
           </thead>
           <tbody>
-            <template v-for="equipment in equipments" :key="equipment._id">
-              <tr v-for="asset in equipment.equipments" :key="asset._id.toString()" class="
+            <template
+              v-for="equipment in equipments"
+              :key="equipment._id"
+            >
+              <tr
+                v-for="equipmentAsset in equipment.equipments"
+                :key="equipmentAsset._id.toString()"
+                class="
                   tw-border-b
                   tw-border-gray-700
-                ">
-                <td class="
+                "
+              >
+                <td
+                  class="
                     tw-py-2
                     tw-px-4
-                  ">
-                  {{ asset.name }}
+                  "
+                >
+                  {{ equipmentAsset.name }}
                 </td>
-                <td class="
+                <td
+                  class="
                     tw-py-2
                     tw-px-4
-                  ">
-                  {{ asset.code }}
+                  "
+                >
+                  {{ equipmentAsset.code }}
                 </td>
-                <td class="
+                <td
+                  class="
                     tw-py-2
                     tw-px-4
-                  ">
+                  "
+                >
                   {{ formatDateTime(equipment.allocation_date) }}
                 </td>
-                <td class="
+                <td
+                  class="
                     tw-py-2
                     tw-px-4
-                  ">
+                  "
+                >
                   <span v-if="!equipment.collection_date">Não Recolhido</span>
                   <span v-else>{{ formatDateTime(equipment.collection_date) }}</span>
                 </td>
-                <td class="
+                <td
+                  class="
                     tw-py-2
                     tw-px-4
-                  ">
+                  "
+                >
                   <span>{{ equipment.delivered_by.name }}</span>
                 </td>
-                <td class="
+                <td
+                  class="
                     tw-py-2
                     tw-px-4
-                  "  >
-                  <aeria-button icon="eye" small @click="fetchAssetById(asset._id.toString()); panelVisible = true">
+                  "
+                >
+                  <aeria-button
+                    icon="eye"
+                    small
+                    @click="fetchAssetById(equipmentAsset._id.toString()); panelVisible = true"
+                  >
                     Visualizar
                   </aeria-button>
                 </td>
@@ -291,40 +345,126 @@ onMounted(async () => {
     </div>
   </div>
 
-  <aeria-panel v-model="panelVisible" float close-hint title="Asset Details" @overlay-click="panelVisible = false">
-    <div v-if="asset" class="tw-w-full tw-h-full tw-flex tw-flex-col tw-items-center">
-      <h1 class="tw-text-2xl tw-font-bold tw-text-center tw-mb-4">
+  <aeria-panel
+    v-model="panelVisible"
+    float
+    close-hint
+    title="Asset Details"
+    @overlay-click="panelVisible = false"
+  >
+    <div
+      v-if="asset"
+      class="
+        tw-w-full
+        tw-h-full
+        tw-flex
+        tw-flex-col
+        tw-items-center
+      "
+    >
+      <h1
+        class="
+          tw-text-2xl
+          tw-font-bold
+          tw-text-center
+          tw-mb-4
+        "
+      >
         {{ asset.name }}
       </h1>
 
-      <div class="tw-w-full tw-max-w-md tw-space-y-4">
-        <div class="tw-flex tw-justify-between tw-border-b tw-pb-2">
-          <div class="tw-flex tw-items-center">
-            <aeria-icon icon="barcode" class="tw-mr-2"></aeria-icon>
+      <div
+        class="
+          tw-w-full
+          tw-max-w-md
+          tw-space-y-4
+        "
+      >
+        <div
+          class="
+            tw-flex
+            tw-justify-between
+            tw-border-b
+            tw-pb-2
+          "
+        >
+          <div
+            class="
+              tw-flex
+              tw-items-center
+            "
+          >
+            <aeria-icon
+              icon="barcode"
+              class="tw-mr-2"
+            />
             <span class="tw-font-bold">Nº de Série:</span>
           </div>
           <span>{{ asset.code }}</span>
         </div>
 
-        <div class="tw-flex tw-justify-between tw-border-b tw-pb-2">
-          <div class="tw-flex tw-items-center">
-            <aeria-icon icon="package" class="tw-mr-2"></aeria-icon>
+        <div
+          class="
+            tw-flex
+            tw-justify-between
+            tw-border-b
+            tw-pb-2
+          "
+        >
+          <div
+            class="
+              tw-flex
+              tw-items-center
+            "
+          >
+            <aeria-icon
+              icon="package"
+              class="tw-mr-2"
+            />
             <span class="tw-font-bold">Inclui Acessórios:</span>
           </div>
           <span>{{ asset.includes_accessories ? 'Sim' : 'Não' }}</span>
         </div>
 
-        <div class="tw-flex tw-justify-between tw-border-b tw-pb-2">
-          <div class="tw-flex tw-items-center">
-            <aeria-icon icon="user" class="tw-mr-2"></aeria-icon>
+        <div
+          class="
+            tw-flex
+            tw-justify-between
+            tw-border-b
+            tw-pb-2
+          "
+        >
+          <div
+            class="
+              tw-flex
+              tw-items-center
+            "
+          >
+            <aeria-icon
+              icon="user"
+              class="tw-mr-2"
+            />
             <span class="tw-font-bold">Registrado por:</span>
           </div>
           <span>{{ asset.registered_by?.name }}</span>
         </div>
 
-        <div class="tw-flex tw-justify-between">
-          <div class="tw-flex tw-items-center">
-            <aeria-icon icon="read-cv-logo" class="tw-mr-2"></aeria-icon>
+        <div
+          class="
+            tw-flex
+            tw-justify-between
+          "
+        >
+          <div
+            class="
+              tw-flex
+              tw-items-center
+            "
+          >
+            <aeria-icon
+              icon="read-cv-logo"
+              class="tw-mr-2"
+            />
             <span class="tw-font-bold">Observação:</span>
           </div>
           <span>{{ asset.observation || 'Nenhuma' }}</span>
@@ -333,16 +473,37 @@ onMounted(async () => {
     </div>
 
     <template #footer>
-      <div class="tw-w-full tw-flex tw-justify-end tw-px-6 tw-py-4">
-        <aeria-button large class="tw-bg-blue-900 tw-text-white" @click="panelVisible = false">
+      <div
+        class="
+          tw-w-full
+          tw-flex
+          tw-justify-end
+          tw-px-6
+          tw-py-4
+        "
+      >
+        <aeria-button
+          large
+          class="
+            tw-bg-blue-900
+            tw-text-white
+          "
+          @click="panelVisible = false"
+        >
           Fechar
         </aeria-button>
       </div>
     </template>
   </aeria-panel>
 
-
-  <aeria-insert-panel v-if="editPanel" v-model:visible="editPanel" fixed-right close-hint collection="employee"
-    title="Editar colaborador" @cancel="editPanel = false"
-    @insert="employee = $event as CollectionItemWithId<'employee'>" />
+  <aeria-insert-panel
+    v-if="editPanel"
+    v-model:visible="editPanel"
+    fixed-right
+    close-hint
+    collection="employee"
+    title="Editar colaborador"
+    @cancel="editPanel = false"
+    @insert="employee = $event as CollectionItemWithId<'employee'>"
+  />
 </template>

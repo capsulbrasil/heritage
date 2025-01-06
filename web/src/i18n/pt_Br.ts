@@ -1,5 +1,3 @@
-import { defineLocale } from "aeria-ui";
+import { defineLocale } from 'aeria-ui'
 
-export const ptbr = defineLocale({
-    
-});
+export const ptbr = defineLocale({})
