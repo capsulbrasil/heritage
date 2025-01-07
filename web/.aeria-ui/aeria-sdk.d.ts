@@ -309,9 +309,6 @@ declare type MirrorDescriptions = {
       "allocation_date",
       "collection_date"
     ],
-    "presets": [
-      "add"
-    ],
     "search": {
       "indexes": [
         "delivered_to"
@@ -344,6 +341,18 @@ declare type MirrorDescriptions = {
             "term2": true
           }
         }
+      }
+    },
+    "presets": [
+      "add"
+    ],
+    "actions": {
+      "spawnAdd": {
+        "label": "action.add",
+        "event": "spawnAdd",
+        "icon": "plus",
+        "button": true,
+        "translate": true
       }
     }
   },
@@ -485,6 +494,9 @@ declare type MirrorDescriptions = {
     "indexes": [
       "name"
     ],
+    "unique": [
+      "email"
+    ],
     "properties": {
       "name": {
         "type": "string"
@@ -511,8 +523,7 @@ declare type MirrorDescriptions = {
       },
       "email": {
         "type": "string",
-        "inputType": "email",
-        "unique": true
+        "inputType": "email"
       },
       "password": {
         "type": "string",
@@ -537,9 +548,6 @@ declare type MirrorDescriptions = {
       },
       "picture": {
         "readOnly": true
-      },
-      "group": {
-        "type": "string"
       },
       "self_registered": {
         "type": "boolean",
@@ -875,6 +883,14 @@ declare type MirrorRouter = {
         "root"
       ],
       "builtin": true
+    }
+  },
+  "/user/editProfile": {
+    "POST": {
+      "roles": [
+        "unauthenticated",
+        "root"
+      ]
     }
   },
   "/user/authenticate": {

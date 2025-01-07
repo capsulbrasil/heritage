@@ -7,6 +7,7 @@ export default init({
   config: {
     baseUrl: '/api',
     publicUrl: process.env.API_URL,
+    webPublicUrl: process.env.WEB_URL,
     secret: process.env.APPLICATION_SECRET,
     database: {
       mongodbUrl: process.env.MONGODB_URL,

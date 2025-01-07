@@ -19,8 +19,8 @@
     "@aeria-ui/i18n-pt": "latest",
     "@eslint-aeria/config-ui": "^0.0.3",
     "aeria-app-layout": "^0.0.46",
-    "aeria-sdk": "^0.0.163",
-    "aeria-ui": "^0.0.150"
+    "aeria-sdk": "^0.0.166",
+    "aeria-ui": "^0.0.153"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

@@ -37,5 +37,8 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
         },
       },
     },
+    presets:[
+      'add'
+    ],
   },
 });
