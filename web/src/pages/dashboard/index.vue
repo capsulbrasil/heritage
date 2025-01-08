@@ -9,14 +9,17 @@ definePage({
   },
 })
 
-defineProps<Props>()
-
 const employee = ref({} as CollectionItemWithId<'employee'>)
 const equipments = ref({} as CollectionItemWithId<'equipmentRelease'>[])
+
 
 type Props = {
   id: String
 }
+
+onMounted(async () => {
+});
+
 </script>
 
 <template>
