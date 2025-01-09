@@ -23,6 +23,22 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
       },
     },
     properties: {
+      equipments: {
+        type:'array',
+        items:{
+          $ref:'asset',
+          indexes:[
+            'name',
+            'code'
+          ],
+          constraints:{
+            operator: "equal",
+            term1: "was_collected",
+            term2: false
+          }
+        },
+        
+      },
       delivered_to: {
         $ref: "employee",
         constraints: {

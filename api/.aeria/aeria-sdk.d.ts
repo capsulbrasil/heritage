@@ -236,8 +236,14 @@ declare type MirrorDescriptions = {
             "code"
           ],
           "indexes": [
-            "name"
-          ]
+            "name",
+            "code"
+          ],
+          "constraints": {
+            "operator": "equal",
+            "term1": "was_collected",
+            "term2": false
+          }
         }
       },
       "delivered_to": {
