@@ -1,5 +1,4 @@
 import { defineLocale } from "aeria-ui";
-import EquipmentReleaseAdd from "../pages/dashboard/equipmentReleaseAdd.vue";
 
 export const ptbr = defineLocale({
   equipment_Release: "Liberação de Equipamento",
@@ -20,4 +19,7 @@ export const ptbr = defineLocale({
   hello: "Olá",
   profile: "Perfil",
   EquipmentReleaseAdd: "Adicionar Liberação de Equipamento",
+  was_collected: "Foi coletado",
+  allocation_date: "Data de Locação",
+  collection_date: "Data de Recolhimento",
 });

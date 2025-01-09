@@ -106,12 +106,11 @@ collection Asset {
 collection EquipmentRelease {
   icon "gauge"
   properties {
-    equipments []Asset @populate([name, code])
+    equipments []Asset @populate([name, code, was_collected])
     delivered_to Employee @populate([name, corporate_email, contact, is_active, picture_file, admission_date, exit_date]) 
     delivered_by User  @populate([name, email])
     allocation_date str @format("date-time")
     was_collected bool
-    collection_date str @format("date-time")
   }
   functions {
     get @expose(true)
@@ -133,7 +132,6 @@ collection EquipmentRelease {
     delivered_to
     delivered_by
     allocation_date
-    collection_date
   }
   table{
     delivered_to

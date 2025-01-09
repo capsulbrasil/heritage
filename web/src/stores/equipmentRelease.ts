@@ -14,8 +14,7 @@ export const equipmentStore = createStore((context) =>
           >
         ) {
           ROUTER.push({
-            path:
-              "/dashboard/equipmentRelease/view/" + equipment.delivered_to._id, // Rota para equipamento
+            path: "/dashboard/employeeDetail/" + equipment.delivered_to._id, // Rota para equipamento
           });
         },
       }),

@@ -24,20 +24,16 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
     },
     properties: {
       equipments: {
-        type:'array',
-        items:{
-          $ref:'asset',
-          indexes:[
-            'name',
-            'code'
-          ],
-          constraints:{
+        type: "array",
+        items: {
+          $ref: "asset",
+          indexes: ["name", "code"],
+          constraints: {
             operator: "equal",
             term1: "was_collected",
-            term2: false
-          }
+            term2: true,
+          },
         },
-        
       },
       delivered_to: {
         $ref: "employee",
@@ -55,56 +51,57 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
         },
       },
     },
-    formLayout: {
-      fields: {
-        collection_date: {
-          if: {
-            operator: "equal",
-            term1: "was_collected",
-            term2: true,
-          },
-        },
-      },
-    },
     presets: ["add", "crud"],
   },
   functions: {
-    insert:async (payload: InsertPayload<SchemaWithId<equipmentReleaseCollection['description']>>, context):Promise<Result.Either<EndpointError, Partial<equipmentReleaseCollection>>> => {
-      if(payload.what._id){
-        const{error, result} = await context.collections.equipmentRelease.functions.get({
-          filters:{
-            _id: payload.what._id
-          }
-        })
-        if(error){
-          return Result.error(error)
+    insert: async (
+      payload: InsertPayload<
+        SchemaWithId<equipmentReleaseCollection["description"]>
+      >,
+      context
+    ): Promise<
+      Result.Either<EndpointError, Partial<equipmentReleaseCollection>>
+    > => {
+      if (payload.what._id) {
+        const { error, result } =
+          await context.collections.equipmentRelease.functions.get({
+            filters: {
+              _id: payload.what._id,
+            },
+          });
+        if (error) {
+          return Result.error(error);
         }
-        for(const equipment of result.equipments){
-          const {error} = await context.collections.asset.functions.insert({
-            what:{
+        for (const equipment of result.equipments) {
+          const { error } = await context.collections.asset.functions.insert({
+            what: {
               _id: equipment._id,
-              was_collected: payload.what.was_collected !== null || payload.what.was_collected !== undefined ? payload.what.was_collected : result.was_collected
-            }
-          })
-          if(error){
-            continue
+              was_collected:
+                payload.what.was_collected !== null ||
+                payload.what.was_collected !== undefined
+                  ? payload.what.was_collected
+                  : result.was_collected,
+            },
+          });
+          if (error) {
+            continue;
           }
         }
-      }  
-      if (payload.what.equipments && payload.what.was_collected){
-        for(const equipment of payload.what.equipments){
-          const {error} = await context.collections.asset.functions.insert({
-            what:{
-              _id: equipment,
-              was_collected: payload.what.was_collected
-            }
-          })
-          if(error){
-            continue
-          }
-        }   
       }
-      return originalInsert(payload, context) as any
+      if (payload.what.equipments && payload.what.was_collected) {
+        for (const equipment of payload.what.equipments) {
+          const { error } = await context.collections.asset.functions.insert({
+            what: {
+              _id: equipment,
+              was_collected: payload.what.was_collected,
+            },
+          });
+          if (error) {
+            continue;
+          }
+        }
+      }
+      return originalInsert(payload, context) as any;
     },
     getGroupedByDeliveredTo: async (_, context) => {
       if (!context.token.authenticated) {

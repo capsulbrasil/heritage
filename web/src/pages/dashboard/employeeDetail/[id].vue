@@ -91,7 +91,7 @@ onMounted(async () => {
               <th class="tw-py-2 tw-px-4">Recurso Atribuído</th>
               <th class="tw-py-2 tw-px-4">Patrimônio</th>
               <th class="tw-py-2 tw-px-4">Data de Alocação</th>
-              <th class="tw-py-2 tw-px-4">Data de Recolhimento</th>
+              <th class="tw-py-2 tw-px-4">Status do Equipamento</th>
               <th class="tw-py-2 tw-px-4">Quem entregou</th>
             </tr>
           </thead>
@@ -113,8 +113,8 @@ onMounted(async () => {
                 <td class="tw-py-2 tw-px-4">{{ equipmentAsset.code }}</td>
                 <td class="tw-py-2 tw-px-4">{{ formatDateTime(equipment.allocation_date) }}</td>
                 <td class="tw-py-2 tw-px-4">
-                  <span v-if="!equipment.collection_date">Não Recolhido</span>
-                  <span v-else>{{ formatDateTime(equipment.collection_date) }}</span>
+                  <span v-if="equipmentAsset.was_collected == false">Não Recolhido</span>
+                  <span v-else>Recolhido</span>
                 </td>
                 <td class="tw-py-2 tw-px-4"><span>{{ equipment.delivered_by.name }}</span></td>
               </tr>

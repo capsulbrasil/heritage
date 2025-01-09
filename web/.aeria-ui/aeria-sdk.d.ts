@@ -233,7 +233,8 @@ declare type MirrorDescriptions = {
           "$ref": "asset",
           "populate": [
             "name",
-            "code"
+            "code",
+            "was_collected"
           ],
           "indexes": [
             "name",
@@ -242,7 +243,7 @@ declare type MirrorDescriptions = {
           "constraints": {
             "operator": "equal",
             "term1": "was_collected",
-            "term2": false
+            "term2": true
           }
         }
       },
@@ -283,10 +284,6 @@ declare type MirrorDescriptions = {
       "was_collected": {
         "type": "boolean"
       },
-      "collection_date": {
-        "type": "string",
-        "format": "date-time"
-      },
       "created_at": {
         "type": "string",
         "format": "date-time",
@@ -316,8 +313,7 @@ declare type MirrorDescriptions = {
       "equipments",
       "delivered_to",
       "delivered_by",
-      "allocation_date",
-      "collection_date"
+      "allocation_date"
     ],
     "search": {
       "indexes": [
@@ -360,17 +356,6 @@ declare type MirrorDescriptions = {
       "actions": {
         "viewContent": {
           "button": true
-        }
-      }
-    },
-    "formLayout": {
-      "fields": {
-        "collection_date": {
-          "if": {
-            "operator": "equal",
-            "term1": "was_collected",
-            "term2": true
-          }
         }
       }
     },
