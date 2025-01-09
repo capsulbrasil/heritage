@@ -1,6 +1,13 @@
-import { ACError, HTTPStatus, Result } from "aeria";
+import {
+  ACError,
+  CollectionItemWithId,
+  HTTPStatus,
+  isRequired,
+  Result,
+} from "aeria";
 import { extendEquipmentReleaseCollection } from "../../.aeria/out/collections/equipmentRelease.mjs";
 import { equipmentReleaseDataContract } from "../contracts/equipmentRelease.js";
+import { getEquipmentBorrowedByUserContract } from "../contracts/getEquipmentsBorrowedByUser.js";
 
 export const equipmentRelease = extendEquipmentReleaseCollection({
   description: {
@@ -41,42 +48,48 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
     },
     presets: ["add", "crud"],
   },
-
   functions: {
-    getGroupedByDeliveredTo: async (context) => {
+    getGroupedByDeliveredTo: async (_, context) => {
       if (!context.token.authenticated) {
         return context.error(HTTPStatus.Forbidden, {
           code: ACError.AuthorizationError,
         });
       }
 
-      const groupedData = await context.collections.equipmentRelease.model
-        .aggregate([
-          {
-            $lookup: {
-              from: "employee",
-              localField: "delivered_to",
-              foreignField: "_id",
-              as: "delivered_to",
+      const groupedData: CollectionItemWithId<"employee">[] =
+        (await context.collections.equipmentRelease.model
+          .aggregate([
+            {
+              $lookup: {
+                from: "employee",
+                localField: "delivered_to",
+                foreignField: "_id",
+                as: "delivered_to",
+              },
             },
-          },
-          {
-            $unwind: {
-              path: "$delivered_to",
+            {
+              $unwind: {
+                path: "$delivered_to",
+              },
             },
-          },
-          {
-            $group: {
-              _id: "$delivered_to",
+            {
+              $group: {
+                _id: "$delivered_to",
+              },
             },
-          },
-          {
-            $replaceRoot: {
-              newRoot: "$_id",
+            {
+              $replaceRoot: {
+                newRoot: "$_id",
+              },
             },
-          },
-        ])
-        .toArray();
+            {
+              $skip: context.request.payload.offset,
+            },
+            {
+              $limit: 10,
+            },
+          ])
+          .toArray()) as unknown as CollectionItemWithId<"employee">[];
 
       if (!groupedData) {
         console.error("Erro ao executar a agregação:", ACError);
@@ -89,9 +102,9 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
     },
   },
   contracts: {
-    equipmentReleaseData: equipmentReleaseDataContract,
+    getGroupedByDeliveredTo: equipmentReleaseDataContract,
   },
   exposedFunctions: {
-    equipmentReleaseDataContract: true,
+    getGroupedByDeliveredTo: true,
   },
 });

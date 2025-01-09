@@ -5,9 +5,12 @@ import {
 } from "aeria";
 
 export const equipmentReleaseDataContract = defineContract({
-  properties: {
-    delivered_to: {
-      type: "string",
+  payload: {
+    type: "object",
+    properties: {
+      offset: {
+        type: "number",
+      },
     },
   },
   response: [
@@ -16,6 +19,7 @@ export const equipmentReleaseDataContract = defineContract({
       type: "array",
       items: {
         $ref: "employee",
+        type: "object",
       },
     }),
   ],

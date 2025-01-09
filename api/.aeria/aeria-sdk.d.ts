@@ -224,17 +224,14 @@ declare type MirrorDescriptions = {
     "$id": "equipmentRelease",
     "properties": {
       "equipments": {
-        "type": "array",
-        "items": {
-          "$ref": "asset",
-          "populate": [
-            "name",
-            "code"
-          ],
-          "indexes": [
-            "name"
-          ]
-        }
+        "$ref": "asset",
+        "populate": [
+          "name",
+          "code"
+        ],
+        "indexes": [
+          "name"
+        ]
       },
       "delivered_to": {
         "$ref": "employee",
@@ -807,6 +804,71 @@ declare type MirrorRouter = {
         "root"
       ],
       "builtin": true
+    }
+  },
+  "/equipmentRelease/getGroupedByDeliveredTo": {
+    "POST": {
+      "roles": [
+        "unauthenticated",
+        "root"
+      ],
+      "payload": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "number"
+          }
+        }
+      },
+      "response": [
+        {
+          "type": "object",
+          "properties": {
+            "_tag": {
+              "const": "Error"
+            },
+            "result": {},
+            "error": {
+              "type": "object",
+              "required": [
+                "httpStatus",
+                "code"
+              ],
+              "properties": {
+                "httpStatus": {
+                  "type": "number"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "details": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "properties": {
+            "_tag": {
+              "const": "Result"
+            },
+            "error": {},
+            "result": {
+              "type": "array",
+              "items": {
+                "$ref": "employee",
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "/file/get": {
