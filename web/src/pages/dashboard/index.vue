@@ -9,61 +9,24 @@ definePage({
   },
 })
 
-// const equipments = ref<CollectionItemWithId<'employee'>[]>([])
+const equipments = ref<CollectionItemWithId<'employee'>[]>([])
+type employee = CollectionItemWithId<'employee'>;
+const router = useRouter();
 
-// const panelVisible = ref(false);
-// type employee = CollectionItemWithId<'employee'>;
-// const router = useRouter();
-// const pagination = ref({
-//   recordsCount: 10,
-//   recordsTotal: 100,
-//   offset: 0,
-//   limit: 10,
-// })
+const navigateToEmployee = (id: string) => {
+  router.push(`/dashboard/employeeDetail/view/${id}`);
+};
 
-// const navigateToEmployee = (id: string) => {
-//   router.push(`/dashboard/equipmentRelease/view/${id}`);
-// };
+onMounted(async () => {
+  const { error, result } = await aeria().equipmentRelease.getGroupedByDeliveredTo.POST();
+  if (error) {
+    return
+  }
+  equipments.value = result
+});
 
-// onMounted(async () => {
-//   const { error, result } = await aeria().equipmentRelease.getGroupedByDeliveredTo.POST({ offset: pagination.value.offset });
-//   if (error) {
-//     return
-//   }
-//   equipments.value = result
-// });
-
-const employee = ref({} as CollectionItemWithId<'employee'>)
-const equipments = ref({} as CollectionItemWithId<'equipmentRelease'>[])
 </script>
-
 <template>
-  <div v-if="employee && equipments" class="tw-flex tw-flex-col tw-gap-4">
-    <aeria-crud collection="equipmentRelease" class="tw-cursor-pointer">
-      <template #row-delivered_to="{ row, column }">
-        <div class="tw-flex tw-flex-col tw-gap-1">
-          <div v-if="row[column]?.is_active == true" class="tw-cursor-default linked-text tw-w-min tw-whitespace-pre">
-            <aeria-icon icon="check-circle" style="--icon-color: green; --icon-size: 1.2rem;" class="tw-text-[12pt]">
-              {{ row[column]?.name || "-" }}
-            </aeria-icon>
-            <div class="tw-cursor-default tw-text-[10pt] tw-opacity-60 linked-text">
-              {{ row[column]?.contact || "-" }} - {{ row[column]?.corporate_email }}
-            </div>
-          </div>
-          <div v-else class="tw-cursor-not-allowed linked-text tw-w-min tw-whitespace-pre tw-opacity-40">
-            <aeria-icon icon="x-circle" style="--icon-color: red; --icon-size: 1.2rem;" class="tw-text-[12pt]">
-              {{ row[column]?.name || "-" }}
-            </aeria-icon>
-            <div class="tw-cursor-not-allowed tw-text-[10pt] tw-opacity-60 linked-text">
-              {{ row[column]?.contact || "-" }} - {{ row[column]?.corporate_email }}
-            </div>
-          </div>
-        </div>
-      </template>
-    </aeria-crud>
-  </div>
-
-  <!-- <aeria-button icon="plus" @click="panelVisible = true">Adicionar Equipamento</aeria-button>
   <aeria-table>
     <template #thead>
       <tr>
@@ -106,10 +69,4 @@ const equipments = ref({} as CollectionItemWithId<'equipmentRelease'>[])
       </tr>
     </template>
   </aeria-table>
-  <aeria-pagination :pagination></aeria-pagination>
-
-  <aeria-panel v-model="panelVisible" fixed-right close-hint title="Asset Details"
-    @overlay-click="panelVisible = false">
-    <aeria-insert-panel collection="equipmentRelease" />
-  </aeria-panel> -->
 </template>

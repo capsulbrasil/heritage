@@ -224,14 +224,17 @@ declare type MirrorDescriptions = {
     "$id": "equipmentRelease",
     "properties": {
       "equipments": {
-        "$ref": "asset",
-        "populate": [
-          "name",
-          "code"
-        ],
-        "indexes": [
-          "name"
-        ]
+        "type": "array",
+        "items": {
+          "$ref": "asset",
+          "populate": [
+            "name",
+            "code"
+          ],
+          "indexes": [
+            "name"
+          ]
+        }
       },
       "delivered_to": {
         "$ref": "employee",
@@ -812,14 +815,6 @@ declare type MirrorRouter = {
         "unauthenticated",
         "root"
       ],
-      "payload": {
-        "type": "object",
-        "properties": {
-          "offset": {
-            "type": "number"
-          }
-        }
-      },
       "response": [
         {
           "type": "object",
@@ -862,8 +857,7 @@ declare type MirrorRouter = {
             "result": {
               "type": "array",
               "items": {
-                "$ref": "employee",
-                "type": "object"
+                "$ref": "employee"
               }
             }
           }

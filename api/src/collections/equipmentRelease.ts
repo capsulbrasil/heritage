@@ -68,6 +68,11 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
               },
             },
             {
+              $sort: {
+                allocation_date: 1,
+              },
+            },
+            {
               $unwind: {
                 path: "$delivered_to",
               },
@@ -83,7 +88,7 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
               },
             },
             {
-              $skip: context.request.payload.offset,
+              $skip: 0,
             },
             {
               $limit: 10,
