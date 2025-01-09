@@ -22,6 +22,9 @@ declare type MirrorDescriptions = {
       "includes_accessories": {
         "type": "boolean"
       },
+      "was_collected": {
+        "type": "boolean"
+      },
       "registered_by": {
         "$ref": "user",
         "indexes": [
@@ -52,7 +55,8 @@ declare type MirrorDescriptions = {
       "code",
       "includes_accessories",
       "registered_by",
-      "observation"
+      "observation",
+      "was_collected"
     ],
     "required": [
       "name",

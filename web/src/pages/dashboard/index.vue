@@ -14,7 +14,7 @@ type employee = CollectionItemWithId<'employee'>;
 const router = useRouter();
 
 const navigateToEmployee = (id: string) => {
-  router.push(`/dashboard/employeeDetail/view/${id}`);
+  router.push(`/dashboard/employeeDetail/${id}`);
 };
 
 onMounted(async () => {

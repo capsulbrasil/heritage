@@ -2,9 +2,13 @@ import {
   ACError,
   CollectionItemWithId,
   HTTPStatus,
-  isRequired,
+  insert as originalInsert,
+  InsertPayload,
   Result,
+  SchemaWithId,
+  EndpointError,
 } from "aeria";
+import type { equipmentReleaseCollection } from "../../.aeria/out/collections/equipmentRelease.mjs";
 import { extendEquipmentReleaseCollection } from "../../.aeria/out/collections/equipmentRelease.mjs";
 import { equipmentReleaseDataContract } from "../contracts/equipmentRelease.js";
 import { getEquipmentBorrowedByUserContract } from "../contracts/getEquipmentsBorrowedByUser.js";
@@ -49,6 +53,43 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
     presets: ["add", "crud"],
   },
   functions: {
+    insert:async (payload: InsertPayload<SchemaWithId<equipmentReleaseCollection['description']>>, context):Promise<Result.Either<EndpointError, Partial<equipmentReleaseCollection>>> => {
+      if(payload.what._id){
+        const{error, result} = await context.collections.equipmentRelease.functions.get({
+          filters:{
+            _id: payload.what._id
+          }
+        })
+        if(error){
+          return Result.error(error)
+        }
+        for(const equipment of result.equipments){
+          const {error} = await context.collections.asset.functions.insert({
+            what:{
+              _id: equipment._id,
+              was_collected: payload.what.was_collected !== null || payload.what.was_collected !== undefined ? payload.what.was_collected : result.was_collected
+            }
+          })
+          if(error){
+            continue
+          }
+        }
+      }  
+      if (payload.what.equipments && payload.what.was_collected){
+        for(const equipment of payload.what.equipments){
+          const {error} = await context.collections.asset.functions.insert({
+            what:{
+              _id: equipment,
+              was_collected: payload.what.was_collected
+            }
+          })
+          if(error){
+            continue
+          }
+        }   
+      }
+      return originalInsert(payload, context) as any
+    },
     getGroupedByDeliveredTo: async (_, context) => {
       if (!context.token.authenticated) {
         return context.error(HTTPStatus.Forbidden, {

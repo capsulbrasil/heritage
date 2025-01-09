@@ -58,6 +58,7 @@ collection Asset {
     // type enum @values(["physical", "digital"])
     code str
     includes_accessories bool
+    was_collected bool
     registered_by User
     observation str
   }
@@ -84,6 +85,7 @@ collection Asset {
     includes_accessories
     registered_by
     observation
+    was_collected
   }
   filters{
     // type
