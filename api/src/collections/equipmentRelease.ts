@@ -59,7 +59,9 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
         SchemaWithId<equipmentReleaseCollection["description"]>
       >,
       context
-    ): Promise<Result.Either<EndpointError, Partial<equipmentReleaseCollection>>> => {
+    ): Promise<
+      Result.Either<EndpointError, Partial<equipmentReleaseCollection>>
+    > => {
       if (payload.what._id) {
         const { error, result } =
           await context.collections.equipmentRelease.functions.get({
@@ -86,15 +88,16 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
           }
         }
       }
-      if (payload.what.equipments && payload.what.was_collected) {
+      if (payload.what.equipments) {
         for (const equipment of payload.what.equipments) {
           const { error } = await context.collections.asset.functions.insert({
             what: {
               _id: equipment,
-              was_collected: payload.what.was_collected !== null ||
-              payload.what.was_collected !== undefined
-                ? payload.what.was_collected
-                : false
+              was_collected:
+                payload.what.was_collected !== null ||
+                payload.what.was_collected !== undefined
+                  ? payload.what.was_collected
+                  : false,
             },
           });
           if (error) {
