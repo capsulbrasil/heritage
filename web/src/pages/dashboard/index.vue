@@ -31,7 +31,7 @@ onMounted(async () => {
     <template #thead>
       <tr>
         <th class="tw-text-left tw-py-2 tw-px-4">Entregue Para</th>
-        <th class="tw-text-left tw-py-2 tw-px-4">Status</th>
+        <th class="tw-text-left tw-py-2 tw-px-4"></th>
       </tr>
     </template>
     <template #tbody>
@@ -54,10 +54,7 @@ onMounted(async () => {
             </div>
           </div>
         </td>
-        <td class="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-between">
-          <span class="tw-font-bold" :class="employee.is_active ? 'tw-text-green-500' : 'tw-text-red-500'">
-            {{ employee.is_active ? 'Ativo' : 'Inativo' }}
-          </span>
+        <td class="tw-py-2 tw-px-4 tw-flex tw-items-center tw-justify-end">
           <button class="tw-cursor-pointer tw-flex tw-items-center tw-text-[color:var(--theme-text-color-shade-2)] tw-gap-2 tw-border tw-border-gray-400 
             tw-bg-transparent tw-px-3 tw-py-2 tw-rounded-lg tw-transition-all tw-duration-300 hover:tw-border-gray-300 
             focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-gray-500"

@@ -301,7 +301,9 @@ declare type MirrorDescriptions = {
     },
     "icon": "gauge",
     "table": [
-      "delivered_to"
+      "delivered_to",
+      "equipments",
+      "allocation_date"
     ],
     "required": [
       "equipments",

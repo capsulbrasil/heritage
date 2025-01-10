@@ -39,6 +39,20 @@ const equipments = ref({} as CollectionItemWithId<'equipmentRelease'>[])
                     </div>
                 </div>
             </template>
+            <template #row-equipments="{ row, column }">
+                <div class="tw-flex tw-flex-col tw-gap-1">
+                    <div v-if="row[column] != null" class="tw-cursor-default linked-text tw-w-min tw-whitespace-pre">
+                        <div v-for="asset in row[column]" :key="asset._id"
+                            class="tw-cursor-default tw-text-[10pt] linked-text">
+                            - {{ asset.name || "-" }}
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template #row-allocation_date="{ row, column }">
+                {{ row[column] ? formatDateTime(row[column]) : 'nada' }}
+            </template>
+
         </aeria-crud>
     </div>
 </template>

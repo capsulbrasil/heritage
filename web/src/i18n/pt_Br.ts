@@ -22,4 +22,5 @@ export const ptbr = defineLocale({
   was_collected: "Foi coletado",
   allocation_date: "Data de Locação",
   collection_date: "Data de Recolhimento",
+  equipments: "Equipamentos",
 });

@@ -135,6 +135,8 @@ collection EquipmentRelease {
   }
   table{
     delivered_to
+    equipments
+    allocation_date
   }
   search{
     placeholder "Insira a pesquisa aqui"
