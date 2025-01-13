@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CollectionItemWithId } from '@aeriajs/types'
+import {useDebounce} from 'aeria-ui';
 
 definePage({
   props: true,
@@ -8,36 +9,45 @@ definePage({
     icon: 'gauge',
   },
 })
-const panel = ref(false)
+const search = ref('')
 const equipments = ref<CollectionItemWithId<'employee'>[]>([])
-type employee = CollectionItemWithId<'employee'>;
-const equipmentRelease = ref({} as CollectionItemWithId<'equipmentRelease'>[])
 const router = useRouter();
 
 const navigateToEmployee = (id: string) => {
   router.push(`/dashboard/employeeDetail/${id}`);
 };
 
-onMounted(async () => {
-  const { error, result } = await aeria().equipmentRelease.getGroupedByDeliveredTo.POST();
+const update = async () => {
+  const { error, result } = await aeria().equipmentRelease.getGroupedByDeliveredTo.POST({
+    search: search.value,
+  });
   if (error) {
+    equipments.value = []
     return
   }
   equipments.value = result
-});
+}
+
+const debounce = useDebounce({
+  delay: 600,
+})
+
+const [performLazySearch] = debounce(update)
+
+watch(search, () => performLazySearch(), {
+  immediate: true,
+})
 
 </script>
 <template>
-  <aeria-search v-model="equipmentRelease" v-model:panel="panel" select-only property-name="delivered_to" :property="{
-
-    type: 'array',
-    items: {
-      $ref: 'equipmentRelease',
-      indexes: [
-        'delivered_to'
-      ]
-    }
-  }"></aeria-search>
+  <aeria-input
+    v-model="search"
+    :property="{
+       type: 'string',
+       inputType: 'search',
+       placeholder: 'Pesquise aqui por nome, etc...',
+    }"
+  ></aeria-input>
 
   <aeria-table>
     <template #thead>

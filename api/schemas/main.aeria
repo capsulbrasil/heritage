@@ -111,6 +111,13 @@ collection EquipmentRelease {
     delivered_by User  @populate([name, email])
     allocation_date str @format("date-time")
     was_collected bool
+    // for indexed search
+    delivered_to_name str
+  }
+  search {
+    indexes {
+      delivered_to_name
+    }
   }
   functions {
     get @expose(true)

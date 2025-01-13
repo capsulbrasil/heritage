@@ -7,6 +7,7 @@ import {
   Result,
   SchemaWithId,
   EndpointError,
+  ObjectId,
 } from "aeria";
 import type { equipmentReleaseCollection } from "../../.aeria/out/collections/equipmentRelease.mjs";
 import { extendEquipmentReleaseCollection } from "../../.aeria/out/collections/equipmentRelease.mjs";
@@ -62,6 +63,20 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
     ): Promise<
       Result.Either<EndpointError, Partial<equipmentReleaseCollection>>
     > => {
+      if( payload.what.delivered_to ) {
+        const employee = await context.collections.employee.model.findOne({
+          _id: new ObjectId(payload.what.delivered_to),
+        }, {
+          projection: {
+            name: 1,
+          }
+        })
+
+        if( employee ) {
+          payload.what.delivered_to_name = employee.name
+        }
+      }
+
       if (payload.what._id) {
         const { error, result } =
           await context.collections.equipmentRelease.functions.get({
@@ -107,7 +122,9 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
       }
       return originalInsert(payload, context) as any;
     },
-    getGroupedByDeliveredTo: async (_, context) => {
+    getGroupedByDeliveredTo: async (payload, context) => {
+      const { search } = payload
+
       if (!context.token.authenticated) {
         return context.error(HTTPStatus.Forbidden, {
           code: ACError.AuthorizationError,
@@ -117,6 +134,18 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
       const groupedData: CollectionItemWithId<"employee">[] =
         (await context.collections.equipmentRelease.model
           .aggregate([
+            ...(
+              search
+                ? [{
+                  $match: {
+                    $text: {
+                      $search: search,
+                      $caseSensitive: false,
+                    }
+                  }
+                }]
+                : []
+            ),
             {
               $lookup: {
                 from: "employee",
