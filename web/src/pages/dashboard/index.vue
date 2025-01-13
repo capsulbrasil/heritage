@@ -8,9 +8,10 @@ definePage({
     icon: 'gauge',
   },
 })
-
+const panel = ref(false)
 const equipments = ref<CollectionItemWithId<'employee'>[]>([])
 type employee = CollectionItemWithId<'employee'>;
+const equipmentRelease = ref({} as CollectionItemWithId<'equipmentRelease'>[])
 const router = useRouter();
 
 const navigateToEmployee = (id: string) => {
@@ -27,6 +28,17 @@ onMounted(async () => {
 
 </script>
 <template>
+  <aeria-search v-model="equipmentRelease" v-model:panel="panel" select-only property-name="delivered_to" :property="{
+
+    type: 'array',
+    items: {
+      $ref: 'equipmentRelease',
+      indexes: [
+        'delivered_to'
+      ]
+    }
+  }"></aeria-search>
+
   <aeria-table>
     <template #thead>
       <tr>
