@@ -44,7 +44,9 @@ const update = async () => {
     equipments.value = []
     return
   }
-  pagination.value = result.pagination
+  pagination.value.limit = result.pagination.limit
+  pagination.value.recordsCount = result.pagination.recordsCount
+  pagination.value.recordsTotal = result.pagination.recordsTotal
   equipments.value = result.data
 }
 
@@ -58,7 +60,11 @@ watch(search, () => performLazySearch(), {
   immediate: true,
 })
 
-watch(pagination, () => performLazySearch())
+watchEffect(() => {
+  if(pagination.value.offset > 0){
+    update()
+  }
+})
 
 </script>
 <template>
