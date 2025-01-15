@@ -284,6 +284,9 @@ declare type MirrorDescriptions = {
       "was_collected": {
         "type": "boolean"
       },
+      "delivered_to_name": {
+        "type": "string"
+      },
       "created_at": {
         "type": "string",
         "format": "date-time",
@@ -319,9 +322,8 @@ declare type MirrorDescriptions = {
     ],
     "search": {
       "indexes": [
-        "delivered_to"
-      ],
-      "placeholder": "Insira a pesquisa aqui"
+        "delivered_to_name"
+      ]
     },
     "individualActions": {
       "viewContent": {
@@ -812,6 +814,14 @@ declare type MirrorRouter = {
         "unauthenticated",
         "root"
       ],
+      "payload": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "type": "string"
+          }
+        }
+      },
       "response": [
         {
           "type": "object",

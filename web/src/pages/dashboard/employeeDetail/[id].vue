@@ -113,7 +113,7 @@ onMounted(async () => {
                 <td class="tw-py-2 tw-px-4">{{ equipmentAsset.code }}</td>
                 <td class="tw-py-2 tw-px-4">{{ formatDateTime(equipment.allocation_date) }}</td>
                 <td class="tw-py-2 tw-px-4">
-                  <span v-if="equipmentAsset.was_collected == false">Não Recolhido</span>
+                  <span v-if="equipment.was_collected == false">Não Recolhido</span>
                   <span v-else>Recolhido</span>
                 </td>
                 <td class="tw-py-2 tw-px-4"><span>{{ equipment.delivered_by.name }}</span></td>

@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     AeriaButton: typeof import('@aeria-ui/ui')['AeriaButton']
     AeriaCrud: typeof import('@aeria-ui/ui')['AeriaCrud']
     AeriaIcon: typeof import('@aeria-ui/ui')['AeriaIcon']
+    AeriaInput: typeof import('@aeria-ui/ui')['AeriaInput']
     AeriaInsertPanel: typeof import('@aeria-ui/ui')['AeriaInsertPanel']
     AeriaMain: typeof import('@aeria-ui/ui')['AeriaMain']
     AeriaPanel: typeof import('@aeria-ui/ui')['AeriaPanel']
