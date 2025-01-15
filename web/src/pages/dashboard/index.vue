@@ -9,10 +9,28 @@ definePage({
     icon: 'gauge',
   },
 })
-const search = ref('')
-const equipments = ref<CollectionItemWithId<'employee'>[]>([])
-const router = useRouter();
 
+type EquipmentReleaseByUser = {
+  pagination:{
+    offset: number,
+    recordsTotal:number,
+    limit:number,
+    recordsCount:number
+  }
+  data: CollectionItemWithId<'employee'>[]
+}
+
+const search = ref('')
+const equipments = ref<EquipmentReleaseByUser['data']>([])
+const pagination = ref<EquipmentReleaseByUser['pagination']>(
+  {
+    offset:0,
+    recordsCount:0,
+    limit:0,
+    recordsTotal:0
+  }
+)
+const router = useRouter();
 const navigateToEmployee = (id: string) => {
   router.push(`/dashboard/employeeDetail/${id}`);
 };
@@ -20,12 +38,14 @@ const navigateToEmployee = (id: string) => {
 const update = async () => {
   const { error, result } = await aeria().equipmentRelease.getGroupedByDeliveredTo.POST({
     search: search.value,
+    offset: pagination.value.offset
   });
   if (error) {
     equipments.value = []
     return
   }
-  equipments.value = result
+  pagination.value = result.pagination
+  equipments.value = result.data
 }
 
 const debounce = useDebounce({
@@ -37,6 +57,8 @@ const [performLazySearch] = debounce(update)
 watch(search, () => performLazySearch(), {
   immediate: true,
 })
+
+watch(pagination, () => performLazySearch())
 
 </script>
 <template>
@@ -88,4 +110,8 @@ watch(search, () => performLazySearch(), {
       </tr>
     </template>
   </aeria-table>
+  <aeria-pagination 
+    :pagination
+    class="tw-ml-auto"
+  />
 </template>

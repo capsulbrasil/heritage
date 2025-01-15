@@ -819,6 +819,9 @@ declare type MirrorRouter = {
         "properties": {
           "search": {
             "type": "string"
+          },
+          "offset": {
+            "type": "number"
           }
         }
       },
@@ -862,9 +865,31 @@ declare type MirrorRouter = {
             },
             "error": {},
             "result": {
-              "type": "array",
-              "items": {
-                "$ref": "employee"
+              "type": "object",
+              "properties": {
+                "pagination": {
+                  "type": "object",
+                  "properties": {
+                    "offset": {
+                      "type": "number"
+                    },
+                    "recordsTotal": {
+                      "type": "number"
+                    },
+                    "limit": {
+                      "type": "number"
+                    },
+                    "recordsCount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "employee"
+                  }
+                }
               }
             }
           }

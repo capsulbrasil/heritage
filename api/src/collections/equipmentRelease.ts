@@ -13,6 +13,16 @@ import type { equipmentReleaseCollection } from "../../.aeria/out/collections/eq
 import { extendEquipmentReleaseCollection } from "../../.aeria/out/collections/equipmentRelease.mjs";
 import { equipmentReleaseDataContract } from "../contracts/equipmentRelease.js";
 
+type EquipmentReleaseByUser = {
+  pagination:{
+    offset: number,
+    recordsTotal:number,
+    limit:number,
+    recordsCount:number
+  }
+  data: CollectionItemWithId<'employee'>[]
+}
+
 export const equipmentRelease = extendEquipmentReleaseCollection({
   description: {
     individualActions: {
@@ -133,7 +143,7 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
         });
       }
 
-      const groupedData: CollectionItemWithId<"employee">[] =
+      const groupedData: EquipmentReleaseByUser =
         (await context.collections.equipmentRelease.model
           .aggregate([
             ...(search
@@ -149,41 +159,90 @@ export const equipmentRelease = extendEquipmentReleaseCollection({
                 ]
               : []),
             {
-              $lookup: {
-                from: "employee",
-                localField: "delivered_to",
-                foreignField: "_id",
-                as: "delivered_to",
-              },
+              $facet: {
+                pagination: [
+                  {
+                    $lookup: {
+                      from: "employee",
+                      localField: "delivered_to",
+                      foreignField: "_id",
+                      as: "delivered_to"
+                    }
+                  },
+                  {
+                    $unwind: {
+                      path: "$delivered_to"
+                    }
+                  },
+                  {
+                    $group: {
+                      _id: "$delivered_to"
+                    }
+                  },
+                  {
+                    $replaceRoot: {
+                      newRoot: "$_id"
+                    }
+                  },
+                  {
+                    $count: "recordsTotal"
+                  }
+                ],
+                data: [
+                  {
+                    $lookup: {
+                      from: "employee",
+                      localField: "delivered_to",
+                      foreignField: "_id",
+                      as: "delivered_to"
+                    }
+                  },
+                  {
+                    $unwind: {
+                      path: "$delivered_to"
+                    }
+                  },
+                  {
+                    $group: {
+                      _id: "$delivered_to"
+                    }
+                  },
+                  {
+                    $replaceRoot: {
+                      newRoot: "$_id"
+                    }
+                  },
+                  {
+                    $skip: payload.offset
+                  },
+                  {
+                    $limit: 10
+                  }
+                ]
+              }
             },
             {
-              $sort: {
-                allocation_date: 1,
-              },
+              $addFields: {
+                "pagination.offset": 0,
+                "pagination.limit":10
+              }
             },
             {
               $unwind: {
-                path: "$delivered_to",
-              },
+                path: "$pagination"
+              }
             },
             {
-              $group: {
-                _id: "$delivered_to",
-              },
-            },
-            {
-              $replaceRoot: {
-                newRoot: "$_id",
-              },
-            },
-            {
-              $skip: 0,
-            },
-            {
-              $limit: 10,
-            },
+              $project: {
+                "pagination.recordsTotal":1,
+                "pagination.recordsCount":{$size:"$data"},
+                "pagination.offset":1,
+                "pagination.limit":1,
+                data:1
+              }
+            }
           ])
-          .toArray()) as unknown as CollectionItemWithId<"employee">[];
+          .next()) as unknown as EquipmentReleaseByUser;
 
       if (!groupedData) {
         console.error("Erro ao executar a agregação:", ACError);

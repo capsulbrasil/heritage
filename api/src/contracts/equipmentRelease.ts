@@ -6,16 +6,41 @@ export const equipmentReleaseDataContract = defineContract({
     properties: {
       search: {
         type: 'string'
+      },
+      offset:{
+        type:'number'
       }
     }
   },
   response: [
     genericEndpointErrorSchema(),
     resultSchema({
-      type: "array",
-      items: {
-        $ref: "employee",
-      },
+      type: "object",
+      properties:{
+        pagination:{
+          type:'object',
+          properties:{
+            offset: {
+              type:'number'
+            },
+            recordsTotal:{
+              type:'number'
+            },
+            limit:{
+              type:'number'
+            },
+            recordsCount:{
+              type:'number'
+            }
+          }
+        },
+        data:{
+          type:'array',
+          items: {
+            $ref: "employee",
+          }
+        }
+      }
     }),
   ],
 });
